@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Querida Gift Shop API</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        button { margin: 5px; padding: 10px; }
+        pre { background: #f0f0f0; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Querida Gift Shop API Test</h1>
+    
+    <button onclick="getProducts()">Get All Products</button>
+    <button onclick="addProduct()">Add Sample Product</button>
+    <button onclick="getProduct(1)">Get Product ID 1</button>
+    
+    <h3>Response:</h3>
+    <pre id="output">Click a button to test...</pre>
+
+    <script>
+        const API = 'http://localhost:3000/api';
+        
+        async function getProducts() {
+            const res = await fetch(`${API}/products`);
+            const data = await res.json();
+            document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+        }
+        
+        async function addProduct() {
+            const res = await fetch(`${API}/products`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    name: "Test Product",
+                    price: 19.99,
+                    category: "test"
+                })
+            });
+            const data = await res.json();
+            document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+        }
+        
+        async function getProduct(id) {
+            const res = await fetch(`${API}/products/${id}`);
+            const data = await res.json();
+            document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>

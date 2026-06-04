@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lourice Gift Shop Launcher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffe6f0 0%, #ffb6d9 50%, #ff69b4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .launcher {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #ff1493;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .links a {
+            color: #ff1493;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher">
+        <h1>🎀 Lourice Gift Shop</h1>
+        <div id="status" class="status loading">⏳ Starting server...</div>
+        <button onclick="openShop()" id="openBtn" style="display:none;">🛍️ Open Gift Shop</button>
+        <div class="links" id="links" style="display:none;">
+            <a href="http://localhost:3000">Customer Shop</a> |
+            <a href="http://localhost:3000/admin">Admin Panel</a>
+        </div>
+    </div>
+
+    <script>
+        async function checkServer() {
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                if (response.ok) {
+                    document.getElementById('status').innerHTML = '✅ Server is running!';
+                    document.getElementById('status').className = 'status success';
+                    document.getElementById('openBtn').style.display = 'inline-block';
+                    document.getElementById('links').style.display = 'block';
+                } else {
+                    setTimeout(checkServer, 2000);
+                }
+            } catch (error) {
+                setTimeout(checkServer, 2000);
+            }
+        }
+
+        function openShop() {
+            window.location.href = 'http://localhost:3000';
+        }
+
+        // Check every 2 seconds
+        checkServer();
+    </script>
+</body>
+</html>

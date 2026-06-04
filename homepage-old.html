@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lourice Gift Shop</title>
+  <meta
+    name="description"
+    content="Lourice Gift Shop curates thoughtful flowers, hampers, keepsakes, and custom gifts for every occasion."
+  />
+  <link rel="preconnect" href="https://images.unsplash.com" />
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+  <style>
+    :root {
+      --ink: #2b1721;
+      --muted: #7c5d6a;
+      --paper: #fff3f8;
+      --white: #ffffff;
+      --rose: #e94b88;
+      --coral: #ff8aa8;
+      --leaf: #8b5cf6;
+      --gold: #f5b8cf;
+      --blue: #b94f9f;
+      --line: #f4cfe0;
+      --shadow: 0 18px 42px rgba(148, 43, 92, 0.16);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      object-fit: cover;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .top-bar {
+      background: var(--ink);
+      color: #fff7ee;
+      font-size: 0.85rem;
+      padding: 0.55rem 1.25rem;
+      text-align: center;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(244, 207, 224, 0.8);
+      background: rgba(255, 243, 248, 0.92);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      align-items: center;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: auto 1fr auto;
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: 0.9rem 1.25rem;
+    }
+
+    .brand {
+      align-items: center;
+      display: inline-flex;
+      gap: 0.7rem;
+      min-width: max-content;
+    }
+
+    .brand-mark {
+      align-items: center;
+      background: var(--rose);
+      border-radius: 50%;
+      color: white;
+      display: inline-flex;
+      font-family: Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      height: 42px;
+      justify-content: center;
+      overflow: hidden;
+      width: 42px;
+    }
+
+    .brand-mark img {
+      height: 100%;
+      width: 100%;
+    }
+
+    .brand strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.25rem;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+
+    .brand span {
+      color: var(--muted);
+      display: block;
+      font-size: 0.72rem;
+      margin-top: 0.15rem;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.1rem;
+      justify-content: center;
+      color: #6f3d58;
+      font-size: 0.95rem;
+    }
+
+    .nav-actions {
+      align-items: center;
+      display: flex;
+      gap: 0.65rem;
+      justify-content: flex-end;
+    }
+
+    .icon-btn,
+    .menu-toggle {
+      align-items: center;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      display: inline-flex;
+      height: 42px;
+      justify-content: center;
+      position: relative;
+      width: 42px;
+    }
+
+    .cart-count {
+      align-items: center;
+      background: var(--coral);
+      border-radius: 999px;
+      color: white;
+      display: inline-flex;
+      font-size: 0.72rem;
+      font-weight: 700;
+      height: 19px;
+      justify-content: center;
+      min-width: 19px;
+      padding: 0 0.3rem;
+      position: absolute;
+      right: -3px;
+      top: -6px;
+    }
+
+    .cart-count.bump {
+      animation: cart-bump 320ms ease;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .hero {
+      background:
+        linear-gradient(90deg, rgba(43, 23, 33, 0.76), rgba(233, 75, 136, 0.22)),
+        url("https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=1800&q=82") center / cover;
+      color: white;
+      min-height: min(760px, calc(100vh - 104px));
+      padding: clamp(4.5rem, 11vw, 7.5rem) 1.25rem 3rem;
+      position: relative;
+    }
+
+    .hero-inner {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.55fr);
+      margin: 0 auto;
+      max-width: 1180px;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+    }
+
+    .eyebrow {
+      color: #ffd7e6;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      margin: 0 0 1rem;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3.2rem, 9vw, 6.4rem);
+      letter-spacing: 0;
+      line-height: 0.94;
+      margin: 0;
+      max-width: 850px;
+    }
+
+    .hero-copy > p:not(.eyebrow) {
+      color: #fff0f6;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      line-height: 1.7;
+      margin: 1.4rem 0 0;
+      max-width: 580px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      display: inline-flex;
+      gap: 0.55rem;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0.78rem 1.2rem;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--rose);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+      color: white;
+    }
+
+    .btn-light {
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    .hero-panel {
+      align-self: end;
+      background: rgba(255, 243, 248, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    .hero-panel img {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+    }
+
+    .hero-panel-content {
+      padding: 1.15rem;
+    }
+
+    .hero-panel-content h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.35rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .hero-panel-content p {
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 0.9rem;
+    }
+
+    .ticker {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      border-top: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 2.4rem;
+      margin: 0 auto;
+      max-width: 1180px;
+      overflow: auto;
+      padding: 0.9rem 1.25rem;
+      scrollbar-width: none;
+      white-space: nowrap;
+    }
+
+    .ticker-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ticker span {
+      color: #745064;
+      font-size: 0.92rem;
+    }
+
+    .promo-band {
+      background: var(--rose);
+      color: white;
+      display: none;
+      padding: 0.85rem 1.25rem;
+    }
+
+    .promo-band.show {
+      display: block;
+    }
+
+    .promo-inner {
+      align-items: center;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      margin: 0 auto;
+      max-width: 1180px;
+    }
+
+    .promo-inner strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .promo-inner span {
+      color: #fff0f6;
+      font-size: 0.9rem;
+    }
+
+    .section {
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: clamp(3.2rem, 7vw, 5rem) 1.25rem;
+    }
+
+    .section-head {
+      align-items: end;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      margin-bottom: 1.8rem;
+    }
+
+    .section-head h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1;
+      margin: 0;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+      max-width: 460px;
+    }
+
+    .occasion-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .occasion {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .occasion img {
+      aspect-ratio: 1.2 / 1;
+      width: 100%;
+    }
+
+    .occasion div {
+      padding: 1rem;
+    }
+
+    .occasion h3 {
+      margin: 0 0 0.25rem;
+    }
+
+    .occasion p {
+      color: var(--muted);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .shop-tools {
+      align-items: center;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-wrap {
+      align-items: center;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      display: flex;
+      gap: 0.65rem;
+      min-height: 48px;
+      padding: 0 1rem;
+    }
+
+    .search-wrap input {
+      background: transparent;
+      border: 0;
+      color: var(--ink);
+      min-width: 0;
+      outline: 0;
+      width: 100%;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      justify-content: flex-end;
+    }
+
+    .filter-chip {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #6f3d58;
+      min-height: 40px;
+      padding: 0.55rem 0.9rem;
+    }
+
+    .filter-chip.active {
+      background: var(--leaf);
+      border-color: var(--leaf);
+      color: white;
+    }
+
+    .product-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 520ms ease, transform 520ms ease, box-shadow 220ms ease;
+    }
+
+    .product-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .product-card:hover {
+      box-shadow: var(--shadow);
+    }
+
+    .product-media {
+      position: relative;
+    }
+
+    .product-card img {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+    }
+
+    .tag {
+      background: var(--gold);
+      border-radius: 999px;
+      color: #5c203b;
+      font-size: 0.76rem;
+      font-weight: 800;
+      left: 0.75rem;
+      padding: 0.32rem 0.55rem;
+      position: absolute;
+      top: 0.75rem;
+    }
+
+    .product-body {
+      display: grid;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+
+    .product-title {
+      align-items: start;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: space-between;
+    }
+
+    .product-title h3 {
+      font-size: 1rem;
+      line-height: 1.25;
+      margin: 0;
+    }
+
+    .price {
+      color: var(--rose);
+      display: grid;
+      gap: 0.15rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .price del {
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .discount-badge {
+      background: var(--rose);
+      border-radius: 999px;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 0.25rem 0.45rem;
+      position: absolute;
+      right: 0.75rem;
+      top: 0.75rem;
+    }
+
+    .discount-badge.flash {
+      background: var(--blue);
+    }
+
+    .flash-sale-panel {
+      background: #2b1721;
+      border-radius: var(--radius);
+      color: white;
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding: 1rem;
+    }
+
+    .flash-sale-head {
+      align-items: center;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .flash-sale-head h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.55rem;
+      margin: 0;
+    }
+
+    .flash-sale-head p {
+      color: #fff0f6;
+      line-height: 1.5;
+      margin: 0.25rem 0 0;
+    }
+
+    .flash-sale-grid {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .flash-sale-card {
+      align-items: center;
+      background: rgba(255, 243, 248, 0.08);
+      border: 1px solid rgba(244, 207, 224, 0.22);
+      border-radius: var(--radius);
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: 54px 1fr;
+      padding: 0.65rem;
+    }
+
+    .flash-sale-card .btn {
+      font-size: 0.82rem;
+      grid-column: 1 / -1;
+      min-height: 36px;
+      padding: 0.45rem 0.7rem;
+      width: 100%;
+    }
+
+    .flash-sale-card img {
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius);
+      height: 54px;
+      width: 54px;
+    }
+
+    .flash-sale-card strong {
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.2;
+    }
+
+    .flash-sale-card span {
+      color: #ffd7e6;
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-top: 0.18rem;
+    }
+
+    .product-card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .delivery-note {
+      align-items: center;
+      background: #fff7fb;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #6f3d58;
+      display: inline-flex;
+      font-size: 0.82rem;
+      font-weight: 800;
+      gap: 0.4rem;
+      padding: 0.45rem 0.65rem;
+      width: fit-content;
+    }
+
+    .delivery-note i {
+      color: var(--rose);
+      height: 16px;
+      width: 16px;
+    }
+
+    .product-card .btn {
+      min-height: 42px;
+      padding: 0.62rem 0.9rem;
+      width: 100%;
+    }
+
+    .quantity-control {
+      align-items: center;
+      background: #fff7fb;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: 42px 1fr 42px;
+      min-height: 44px;
+      overflow: hidden;
+    }
+
+    .quantity-btn {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: var(--rose);
+      display: inline-flex;
+      height: 44px;
+      justify-content: center;
+      width: 42px;
+    }
+
+    .quantity-btn:hover {
+      background: #ffe5f0;
+    }
+
+    .quantity-label {
+      color: var(--ink);
+      font-weight: 800;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .bag-overlay {
+      background: rgba(43, 23, 33, 0.42);
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: fixed;
+      transition: opacity 220ms ease;
+      z-index: 40;
+    }
+
+    .bag-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .bag-drawer {
+      background: var(--white);
+      box-shadow: -18px 0 44px rgba(43, 23, 33, 0.18);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      height: 100%;
+      max-width: 430px;
+      position: fixed;
+      right: 0;
+      top: 0;
+      transform: translateX(105%);
+      transition: transform 260ms ease;
+      width: min(100%, 430px);
+      z-index: 45;
+    }
+
+    .bag-drawer.open {
+      transform: translateX(0);
+    }
+
+    .bag-header,
+    .bag-footer {
+      border-bottom: 1px solid var(--line);
+      padding: 1rem;
+    }
+
+    .bag-header {
+      align-items: center;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .bag-header h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.7rem;
+      margin: 0;
+    }
+
+    .bag-close {
+      align-items: center;
+      background: #fff3f8;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      display: inline-flex;
+      height: 40px;
+      justify-content: center;
+      width: 40px;
+    }
+
+    .bag-items {
+      display: grid;
+      gap: 0.85rem;
+      overflow: auto;
+      padding: 1rem;
+    }
+
+    .bag-empty {
+      align-content: center;
+      color: var(--muted);
+      display: grid;
+      gap: 0.85rem;
+      justify-items: center;
+      min-height: 260px;
+      text-align: center;
+    }
+
+    .bag-empty i {
+      color: var(--rose);
+      height: 42px;
+      width: 42px;
+    }
+
+    .bag-item {
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: 72px 1fr;
+      padding: 0.7rem;
+    }
+
+    .bag-item img {
+      aspect-ratio: 1 / 1;
+      border-radius: var(--radius);
+      height: 72px;
+      width: 72px;
+    }
+
+    .bag-item h3 {
+      font-size: 0.95rem;
+      margin: 0 0 0.25rem;
+    }
+
+    .bag-item p {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin: 0 0 0.7rem;
+    }
+
+    .bag-delivery {
+      color: #6f3d58;
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-bottom: 0.7rem;
+    }
+
+    .bag-row {
+      align-items: center;
+      display: flex;
+      gap: 0.7rem;
+      justify-content: space-between;
+    }
+
+    .mini-quantity {
+      align-items: center;
+      background: #fff7fb;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      display: inline-grid;
+      grid-template-columns: 34px 34px 34px;
+      overflow: hidden;
+    }
+
+    .mini-quantity button {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: var(--rose);
+      display: inline-flex;
+      height: 34px;
+      justify-content: center;
+    }
+
+    .mini-quantity span {
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .remove-item {
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 0;
+    }
+
+    .bag-footer {
+      border-bottom: 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .bag-total {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 900;
+    }
+
+    .bag-savings {
+      color: var(--rose);
+      display: none;
+      font-size: 0.9rem;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .bag-savings.show {
+      display: block;
+    }
+
+    .disabled {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+
+    .pet-feature,
+    .car-feature,
+    .clothing-feature,
+    .electronics-feature,
+    .finder-feature {
+      background: #fff7fb;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr auto;
+      margin-top: 1.5rem;
+      padding: 1rem;
+    }
+
+    .pet-feature h3,
+    .car-feature h3,
+    .clothing-feature h3,
+    .electronics-feature h3,
+    .finder-feature h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.55rem;
+      margin: 0 0 0.3rem;
+    }
+
+    .pet-feature p,
+    .car-feature p,
+    .clothing-feature p,
+    .electronics-feature p,
+    .finder-feature p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0;
+      max-width: 650px;
+    }
+
+    .pet-pills,
+    .car-pills,
+    .clothing-pills,
+    .electronics-pills,
+    .finder-pills {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+
+    .pet-pills span,
+    .car-pills span,
+    .clothing-pills span,
+    .electronics-pills span,
+    .finder-pills span {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #6f3d58;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 0.45rem 0.65rem;
+    }
+
+    .toast {
+      align-items: center;
+      background: var(--ink);
+      border-radius: 999px;
+      bottom: 1.2rem;
+      box-shadow: var(--shadow);
+      color: white;
+      display: inline-flex;
+      gap: 0.5rem;
+      left: 50%;
+      min-height: 44px;
+      opacity: 0;
+      padding: 0.7rem 1rem;
+      pointer-events: none;
+      position: fixed;
+      transform: translate(-50%, 18px);
+      transition: opacity 220ms ease, transform 220ms ease;
+      z-index: 55;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .payment-overlay {
+      background: rgba(43, 23, 33, 0.48);
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: fixed;
+      transition: opacity 220ms ease;
+      z-index: 60;
+    }
+
+    .payment-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .payment-modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      color: var(--ink);
+      display: grid;
+      gap: 1rem;
+      left: 50%;
+      max-width: 460px;
+      opacity: 0;
+      padding: 1.2rem;
+      pointer-events: none;
+      position: fixed;
+      top: 50%;
+      transform: translate(-50%, -46%);
+      transition: opacity 220ms ease, transform 220ms ease;
+      width: min(calc(100% - 2rem), 460px);
+      z-index: 65;
+    }
+
+    .payment-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .payment-header {
+      align-items: start;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .payment-header h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.7rem;
+      margin: 0;
+    }
+
+    .payment-summary {
+      background: #fff7fb;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      display: grid;
+      gap: 0.4rem;
+      padding: 0.9rem;
+    }
+
+    .payment-summary strong {
+      color: var(--rose);
+      font-size: 1.25rem;
+    }
+
+    .payment-actions {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .payment-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @keyframes cart-bump {
+      0%, 100% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.22);
+      }
+    }
+
+    .custom-band {
+      background: #ffe5f0;
+      border-bottom: 1px solid var(--line);
+      border-top: 1px solid var(--line);
+    }
+
+    .custom-inner {
+      align-items: center;
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 0.9fr 1.1fr;
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: clamp(3rem, 7vw, 5rem) 1.25rem;
+    }
+
+    .custom-inner img {
+      aspect-ratio: 5 / 4;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+    }
+
+    .custom-copy h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.1rem, 5vw, 3.8rem);
+      line-height: 1;
+      margin: 0 0 1rem;
+    }
+
+    .custom-copy p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 1.2rem;
+      max-width: 620px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 0.75rem;
+      margin: 1.3rem 0 1.6rem;
+    }
+
+    .step {
+      align-items: start;
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: auto 1fr;
+    }
+
+    .step span {
+      align-items: center;
+      background: var(--blue);
+      border-radius: 50%;
+      color: white;
+      display: inline-flex;
+      font-size: 0.85rem;
+      font-weight: 800;
+      height: 30px;
+      justify-content: center;
+      width: 30px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .step p {
+      margin: 0;
+    }
+
+    .reviews {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .review {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+    }
+
+    .stars {
+      color: var(--gold);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.75rem;
+    }
+
+    .review blockquote {
+      color: #573046;
+      line-height: 1.65;
+      margin: 0 0 1rem;
+    }
+
+    .review cite {
+      color: var(--muted);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .contact-band {
+      background: var(--ink);
+      color: white;
+    }
+
+    .contact-inner {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr 1fr;
+      margin: 0 auto;
+      max-width: 1180px;
+      padding: clamp(3rem, 7vw, 5rem) 1.25rem;
+    }
+
+    .contact-inner h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1;
+      margin: 0 0 1rem;
+    }
+
+    .contact-inner p {
+      color: #e8d9ce;
+      line-height: 1.7;
+      margin: 0;
+      max-width: 520px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1.4rem;
+      max-width: 520px;
+    }
+
+    .contact-link {
+      align-items: center;
+      background: rgba(255, 243, 248, 0.08);
+      border: 1px solid rgba(244, 207, 224, 0.24);
+      border-radius: var(--radius);
+      color: #fff3f8;
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.8rem 0.9rem;
+      width: fit-content;
+    }
+
+    .contact-link i {
+      color: var(--coral);
+    }
+
+    .gift-form {
+      background: #fff3f8;
+      border-radius: var(--radius);
+      color: var(--ink);
+      display: grid;
+      gap: 0.85rem;
+      padding: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    label {
+      color: #653750;
+      display: grid;
+      font-size: 0.86rem;
+      font-weight: 800;
+      gap: 0.35rem;
+    }
+
+    input,
+    select,
+    textarea {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      color: var(--ink);
+      min-height: 44px;
+      padding: 0.72rem 0.8rem;
+      width: 100%;
+    }
+
+    textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    .form-note {
+      color: var(--leaf);
+      display: none;
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .form-note.show {
+      display: block;
+    }
+
+    .site-footer {
+      background: #1f1119;
+      color: #f7eee7;
+      padding: 1.25rem;
+    }
+
+    .footer-inner {
+      align-items: center;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      margin: 0 auto;
+      max-width: 1180px;
+    }
+
+    .footer-inner small {
+      color: #d6c5b7;
+    }
+
+    .social {
+      display: flex;
+      gap: 0.7rem;
+    }
+
+    .mobile-menu {
+      border-top: 1px solid var(--line);
+      display: none;
+      padding: 0 1.25rem 1rem;
+    }
+
+    .mobile-menu a {
+      border-bottom: 1px solid var(--line);
+      display: block;
+      padding: 0.85rem 0;
+    }
+
+    @media (max-width: 940px) {
+      .nav {
+        grid-template-columns: auto auto;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-actions {
+        justify-self: end;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .mobile-menu.open {
+        display: block;
+      }
+
+      .hero-inner,
+      .custom-inner,
+      .contact-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        max-width: 420px;
+      }
+
+      .occasion-grid,
+      .flash-sale-grid,
+      .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .shop-tools {
+        grid-template-columns: 1fr;
+      }
+
+      .pet-feature,
+      .car-feature,
+      .clothing-feature,
+      .electronics-feature,
+      .finder-feature {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        justify-content: flex-start;
+      }
+
+      .pet-pills,
+      .car-pills,
+      .clothing-pills,
+      .electronics-pills,
+      .finder-pills {
+        justify-content: flex-start;
+      }
+
+      .reviews {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .top-bar {
+        font-size: 0.78rem;
+      }
+
+      .brand strong {
+        font-size: 1.05rem;
+      }
+
+      .brand span {
+        display: none;
+      }
+
+      .nav {
+        padding: 0.75rem 1rem;
+      }
+
+      .nav-actions .icon-btn:first-child {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-actions,
+      .section-head,
+      .flash-sale-head,
+      .promo-inner,
+      .footer-inner {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .occasion-grid,
+      .flash-sale-grid,
+      .product-grid,
+        .bag-item,
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+      .bag-item img {
+        height: auto;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">Same-day delivery available on selected Nairobi orders before 11:00 AM</div>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Lourice Gift Shop home">
+        <span class="brand-mark">
+          <img src="assets/lourice-icon-512.png" alt="" />
+        </span>
+        <span>
+          <strong>Lourice</strong>
+          <span>Gift Shop</span>
+        </span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#occasions">Occasions</a>
+        <a href="#shop">Shop</a>
+        <a href="#custom">Custom Gifts</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="icon-btn" href="#shop" aria-label="Search products" title="Search products">
+          <i data-lucide="search"></i>
+        </a>
+        <button class="icon-btn" id="openBag" type="button" aria-label="View gift bag" title="Gift bag">
+          <i data-lucide="shopping-bag"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#occasions">Occasions</a>
+      <a href="#shop">Shop</a>
+      <a href="#custom">Custom Gifts</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Curated gifts with feeling</p>
+          <h1 id="hero-title">Lourice Gift Shop</h1>
+          <p>
+            Thoughtful flowers, keepsakes, hampers, and custom bundles for birthdays,
+            love notes, corporate thanks, new babies, and everyday delight.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#shop">
+              <i data-lucide="gift"></i>
+              Shop gifts
+            </a>
+            <a class="btn btn-light" href="#contact">
+              <i data-lucide="message-circle"></i>
+              Build a custom box
+            </a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Featured gift">
+          <img
+            src="https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=82"
+            alt="Pink wrapped gift box with flowers"
+          />
+          <div class="hero-panel-content">
+            <h2>Signature Romance Box</h2>
+            <p>Fresh blooms, truffles, a handwritten card, and a keepsake ribbon wrap.</p>
+            <a class="btn btn-outline" href="#shop">View collection</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="Service highlights">
+      <div class="ticker-track">
+        <span>Handwritten cards on request</span>
+        <span>Elegant wrapping included</span>
+        <span>Corporate gifting support</span>
+        <span>Custom colors and themes</span>
+        <span>Pickup and delivery options</span>
+      </div>
+    </div>
+
+    <div class="promo-band" id="promoBand" aria-live="polite">
+      <div class="promo-inner">
+        <div>
+          <strong>Monthly Market Boost: 30% off selected products</strong>
+          <span id="promoText">Promo dates loading...</span>
+        </div>
+        <a class="btn btn-light" href="#shop">
+          <i data-lucide="badge-percent"></i>
+          Shop discount
+        </a>
+      </div>
+    </div>
+
+    <section class="section" id="occasions" aria-labelledby="occasion-title">
+      <div class="section-head">
+        <h2 id="occasion-title">Shop By Occasion</h2>
+        <p>Start with the moment, then choose a gift that feels personal, polished, and ready to hand over.</p>
+      </div>
+
+      <div class="occasion-grid">
+        <article class="occasion">
+          <img
+            src="https://images.unsplash.com/photo-1512909006721-3d6018887383?auto=format&fit=crop&w=700&q=80"
+            alt="Birthday cake and wrapped gift"
+          />
+          <div>
+            <h3>Birthdays</h3>
+            <p>Colorful bundles, treats, balloons, and keepsakes.</p>
+          </div>
+        </article>
+        <article class="occasion">
+          <img
+            src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=700&q=80"
+            alt="Romantic roses arranged on a table"
+          />
+          <div>
+            <h3>Love</h3>
+            <p>Flowers, candles, chocolate, and handwritten notes.</p>
+          </div>
+        </article>
+        <article class="occasion">
+          <img
+            src="https://images.unsplash.com/photo-1529636798458-92182e662485?auto=format&fit=crop&w=700&q=80"
+            alt="Luxury gift hamper with food items"
+          />
+          <div>
+            <h3>Thank You</h3>
+            <p>Client gifts, host gifts, and graceful appreciation boxes.</p>
+          </div>
+        </article>
+        <article class="occasion">
+          <img
+            src="https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=700&q=80"
+            alt="Soft baby items and neutral gift wrap"
+          />
+          <div>
+            <h3>New Baby</h3>
+            <p>Soft essentials, keepsakes, and gentle celebration sets.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="shop" aria-labelledby="shop-title">
+      <div class="section-head">
+        <h2 id="shop-title">Featured Gifts</h2>
+        <p>Browse ready-to-order favorites, then add a note or ask us to customize the colors.</p>
+      </div>
+
+      <div class="shop-tools">
+        <label class="search-wrap" for="giftSearch">
+          <i data-lucide="search"></i>
+          <input id="giftSearch" type="search" placeholder="Search flowers, electronics, clothing, pets, cars..." />
+        </label>
+        <div class="filters" aria-label="Product filters">
+          <button class="filter-chip active" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="flowers">Flowers</button>
+          <button class="filter-chip" type="button" data-filter="hampers">Hampers</button>
+          <button class="filter-chip" type="button" data-filter="keepsakes">Keepsakes</button>
+          <button class="filter-chip" type="button" data-filter="pets">Pets</button>
+          <button class="filter-chip" type="button" data-filter="cars">Cars</button>
+          <button class="filter-chip" type="button" data-filter="clothing">Clothing</button>
+          <button class="filter-chip" type="button" data-filter="electronics">Electronics</button>
+          <button class="filter-chip" type="button" data-filter="corporate">Corporate</button>
+        </div>
+      </div>
+
+      <div class="flash-sale-panel" id="flashSalePanel" aria-live="polite"></div>
+
+      <div class="product-grid" id="productGrid"></div>
+
+      <div class="pet-feature" aria-label="Pet gifts feature">
+        <div>
+          <h3>Cute Pet Gifts</h3>
+          <p>
+            New pet-friendly picks for kittens, cats, puppies, dogs, chihuahuas, rabbits, birds,
+            hamsters, fish, turtles, and tiny best friends who deserve a little wrapped-up sweetness too.
+          </p>
+        </div>
+        <div class="pet-pills" aria-label="Featured pet types">
+          <span>Kittens</span>
+          <span>Cats</span>
+          <span>Puppies</span>
+          <span>Dogs</span>
+          <span>Chihuahuas</span>
+          <span>Rabbits</span>
+          <span>Birds</span>
+          <span>Hamsters</span>
+          <span>Fish</span>
+          <span>Turtles</span>
+        </div>
+      </div>
+
+      <div class="car-feature" aria-label="Car gift collections feature">
+        <div>
+          <h3>Car Gift Collections</h3>
+          <p>
+            Premium car-themed gifts for BMW M3 fans, BMW X Series lovers, Mercedes-Benz dreamers,
+            Mazda drivers, and anyone who lights up at a beautiful set of keys.
+          </p>
+        </div>
+        <div class="car-pills" aria-label="Featured car collections">
+          <span>BMW M3</span>
+          <span>BMW X Series</span>
+          <span>Mercedes-Benz</span>
+          <span>Mazda</span>
+          <span>Car Lovers</span>
+        </div>
+      </div>
+
+      <div class="clothing-feature" aria-label="Clothing gift collections feature">
+        <div>
+          <h3>Clothing Gifts</h3>
+          <p>
+            Stylish gifting picks for cardigans, men and women suits, kids clothes, hijabs, arafats,
+            kanzus, ties, baggy outfits, crop tops, and finishing accessories.
+          </p>
+        </div>
+        <div class="clothing-pills" aria-label="Featured clothing collections">
+          <span>Cardigans</span>
+          <span>Suits</span>
+          <span>Kids Clothes</span>
+          <span>Hijabs</span>
+          <span>Arafats</span>
+          <span>Kanzus</span>
+          <span>Ties</span>
+          <span>Baggy Fits</span>
+          <span>Crops</span>
+        </div>
+      </div>
+
+      <div class="electronics-feature" aria-label="Electronics gift collections feature">
+        <div>
+          <h3>Electronics Gifts</h3>
+          <p>
+            Tech gifting for HP Envy, Lenovo, Huawei, Apple laptops, current iPhone 17 models,
+            desktop computers, and colorful laptop wraps for every style.
+          </p>
+        </div>
+        <div class="electronics-pills" aria-label="Featured electronics collections">
+          <span>HP Envy</span>
+          <span>Lenovo</span>
+          <span>Huawei</span>
+          <span>Apple</span>
+          <span>iPhone 17</span>
+          <span>Computers</span>
+          <span>Laptop Wraps</span>
+        </div>
+      </div>
+
+      <div class="finder-feature" aria-label="Gift finder help">
+        <div>
+          <h3>Can’t Find The Gift?</h3>
+          <p>
+            If the gift is not listed, or you are not sure what category it belongs to, send a request.
+            Lourice can help locate it, suggest alternatives, or build a custom gift around your idea.
+          </p>
+        </div>
+        <div class="finder-pills" aria-label="Gift finder support options">
+          <span>Unlisted Gifts</span>
+          <span>Hard To Find</span>
+          <span>Custom Search</span>
+          <span>Gift Advice</span>
+          <span>Alternatives</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="custom-band" id="custom" aria-labelledby="custom-title">
+      <div class="custom-inner">
+        <img
+          src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1000&q=82"
+          alt="Curated gift boxes and wrapping supplies on a table"
+        />
+        <div class="custom-copy">
+          <p class="eyebrow">Designed around your person</p>
+          <h2 id="custom-title">Build a gift that says exactly enough.</h2>
+          <p>
+            Tell us the occasion, your budget, favorite colors, and the message you want the gift to carry.
+            We will propose a polished bundle and prepare it for pickup or delivery.
+          </p>
+          <div class="steps">
+            <div class="step">
+              <span>1</span>
+              <div>
+                <strong>Share the brief</strong>
+                <p>Recipient, occasion, budget, delivery date, and any must-have items.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span>2</span>
+              <div>
+                <strong>Approve the selection</strong>
+                <p>We send a gift idea with colors, products, and wrapping direction.</p>
+              </div>
+            </div>
+            <div class="step">
+              <span>3</span>
+              <div>
+                <strong>Send it beautifully</strong>
+                <p>Your box is wrapped, tagged, and prepared with a handwritten card.</p>
+              </div>
+            </div>
+          </div>
+          <a class="btn btn-primary" href="#contact">
+            <i data-lucide="sparkles"></i>
+            Start a custom gift
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reviews" aria-labelledby="reviews-title">
+      <div class="section-head">
+        <h2 id="reviews-title">Kind Words</h2>
+        <p>Gifts should feel easy for the sender and unforgettable for the person opening them.</p>
+      </div>
+      <div class="reviews">
+        <article class="review">
+          <div class="stars" aria-label="Five star rating">*****</div>
+          <blockquote>
+            "The birthday hamper looked premium and personal. The handwritten card was such a sweet detail."
+          </blockquote>
+          <cite>Amara K.</cite>
+        </article>
+        <article class="review">
+          <div class="stars" aria-label="Five star rating">*****</div>
+          <blockquote>
+            "Lourice handled our client gifts beautifully. Neat, consistent, and delivered on time."
+          </blockquote>
+          <cite>Mercy N.</cite>
+        </article>
+        <article class="review">
+          <div class="stars" aria-label="Five star rating">*****</div>
+          <blockquote>
+            "I only gave a color theme and they built the most thoughtful anniversary box."
+          </blockquote>
+          <cite>Daniel O.</cite>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact-band" id="contact" aria-labelledby="contact-title">
+      <div class="contact-inner">
+        <div>
+          <p class="eyebrow">Ready when you are</p>
+          <h2 id="contact-title">Tell us what you want to send.</h2>
+          <p>
+            This is also the Lourice helpline. Use the form, call, or email for custom orders,
+            delivery questions, bulk gifting, product help, or choosing something thoughtful.
+          </p>
+          <div class="contact-list" aria-label="Lourice Gift Shop contact details">
+            <a class="contact-link" href="tel:0114313249">
+              <i data-lucide="phone"></i>
+              Helpline: 0114313249
+            </a>
+            <a class="contact-link" href="mailto:elthrasherrucyv@gmail.com">
+              <i data-lucide="mail"></i>
+              Support email: elthrasherrucyv@gmail.com
+            </a>
+          </div>
+        </div>
+
+        <form class="gift-form" id="giftForm">
+          <div class="form-row">
+            <label>
+              Name
+              <input name="name" type="text" placeholder="Your name" required />
+            </label>
+            <label>
+              Phone
+              <input name="phone" type="tel" placeholder="+254..." required />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Occasion
+              <select name="occasion">
+                <option>Find an unlisted gift</option>
+                <option>Helpline support</option>
+                <option>Birthday</option>
+                <option>Love</option>
+                <option>Thank you</option>
+                <option>Corporate</option>
+                <option>New baby</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label>
+              Budget
+              <select name="budget">
+                <option>$20 - $40</option>
+                <option>$40 - $80</option>
+                <option>$80 - $150</option>
+                <option>$150+</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            Gift you are looking for
+            <input name="giftRequest" type="text" placeholder="Example: a perfume set, gaming chair, rare toy, specific laptop, or anything not listed" />
+          </label>
+          <label>
+            Gift notes
+            <textarea name="message" placeholder="Tell us what you need help with, or describe the recipient, colors, date, and delivery area."></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">
+            <i data-lucide="send"></i>
+            Send request
+          </button>
+          <p class="form-note" id="formNote">Thanks. Your request is ready to send through your preferred contact channel.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div class="bag-overlay" id="bagOverlay"></div>
+  <aside class="bag-drawer" id="bagDrawer" aria-labelledby="bagTitle" aria-hidden="true">
+    <div class="bag-header">
+      <h2 id="bagTitle">Your Bag</h2>
+      <button class="bag-close" id="closeBag" type="button" aria-label="Close gift bag">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="bag-items" id="bagItems"></div>
+    <div class="bag-footer">
+      <p class="bag-savings" id="bagSavings"></p>
+      <div class="bag-total">
+        <span>Total</span>
+        <span id="bagTotal">$0</span>
+      </div>
+      <a class="btn btn-primary" href="#contact" id="checkoutButton">
+        <i data-lucide="message-circle"></i>
+        Request these gifts
+      </a>
+    </div>
+  </aside>
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <i data-lucide="sparkles"></i>
+    <span id="toastText">Added to bag</span>
+  </div>
+
+  <div class="payment-overlay" id="paymentOverlay"></div>
+  <section class="payment-modal" id="paymentModal" aria-labelledby="paymentTitle" aria-hidden="true">
+    <div class="payment-header">
+      <div>
+        <p class="eyebrow">Flash sale checkout</p>
+        <h2 id="paymentTitle">M-Pesa Payment</h2>
+      </div>
+      <button class="bag-close" id="closePayment" type="button" aria-label="Close payment prompt">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="payment-summary">
+      <span id="paymentItem">Selected flash sale item</span>
+      <strong id="paymentAmount">$0</strong>
+      <span id="paymentTimeline">Delivery estimate loading...</span>
+      <span>Send M-Pesa payment to: <strong>0114313249</strong></span>
+    </div>
+    <label>
+      Your M-Pesa phone
+      <input id="mpesaPhone" type="tel" placeholder="Enter your M-Pesa number" />
+    </label>
+    <div class="payment-actions">
+      <button class="btn btn-primary" id="payMpesa" type="button">
+        <i data-lucide="smartphone"></i>
+        Pay with M-Pesa
+      </button>
+      <label>
+        Ask another person to pay
+        <input id="sponsorPhone" type="tel" placeholder="Their phone number" />
+      </label>
+      <button class="btn btn-outline" id="requestSponsorPay" type="button">
+        <i data-lucide="send"></i>
+        Send payment request
+      </button>
+    </div>
+    <p class="payment-note">
+      This static page opens your phone/SMS app with payment details. Confirm the payment in M-Pesa
+      and include the item name as the reference.
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <small>&copy; 2026 Lourice Gift Shop. Thoughtful gifting, beautifully wrapped.</small>
+      <div class="social" aria-label="Social links">
+        <a class="icon-btn" href="#" aria-label="Instagram" title="Instagram"><i data-lucide="instagram"></i></a>
+        <a class="icon-btn" href="#" aria-label="Facebook" title="Facebook"><i data-lucide="facebook"></i></a>
+        <a class="icon-btn" href="#" aria-label="Mail" title="Email"><i data-lucide="mail"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        name: "Blush Bloom Bouquet",
+        category: "flowers",
+        price: "$30",
+        tag: "Fresh",
+        description: "A soft seasonal bouquet wrapped with satin ribbon and a note card.",
+        image: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Sweet Celebration Hamper",
+        category: "hampers",
+        price: "$50",
+        tag: "Popular",
+        description: "Chocolate, cookies, tea, and a celebratory mini bouquet.",
+        image: "https://images.unsplash.com/photo-1607083206968-13611e3d76db?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Candle & Calm Set",
+        category: "keepsakes",
+        price: "$32",
+        tag: "Cozy",
+        description: "A scented candle, bath salts, mini florals, and a keepsake card.",
+        image: "https://images.unsplash.com/photo-1603006905393-c5b103f7928b?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Executive Thank You Box",
+        category: "corporate",
+        price: "$75",
+        tag: "Bulk",
+        description: "Premium snacks, notebook, pen, and branded message insert.",
+        image: "https://images.unsplash.com/photo-1607344645866-009c320f1b47?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Rose & Truffle Pairing",
+        category: "flowers",
+        price: "$44",
+        tag: "Romance",
+        description: "Red roses paired with artisan truffles and a handwritten love note.",
+        image: "https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Birthday Flower Burst",
+        category: "flowers",
+        price: "$38",
+        tag: "Birthday",
+        description: "Bright birthday flowers with cheerful wrap, ribbon, and a celebration card.",
+        image: "https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Wedding Flower Grace",
+        category: "flowers",
+        price: "$145",
+        tag: "Wedding",
+        description: "Elegant wedding flowers for bouquets, table accents, and romantic gifting.",
+        image: "https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Compound Flower Planters",
+        category: "flowers",
+        price: "$60",
+        tag: "Compound",
+        description: "Outdoor flowering planters made for entries, balconies, and compound corners.",
+        image: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "House Flower Comfort Set",
+        category: "flowers",
+        price: "$28",
+        tag: "House",
+        description: "Indoor flowers and care notes for softening bedrooms, desks, and living rooms.",
+        image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Garden Flower Starter Box",
+        category: "flowers",
+        price: "$49",
+        tag: "Garden",
+        description: "Garden-friendly blooms, starter care guide, and pretty markers for planting.",
+        image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Little Arrival Bundle",
+        category: "keepsakes",
+        price: "$55",
+        tag: "Baby",
+        description: "Soft blanket, plush toy, milestone card, and gentle neutral wrap.",
+        image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Gourmet Weekend Basket",
+        category: "hampers",
+        price: "$68",
+        tag: "Gourmet",
+        description: "Coffee, preserves, crackers, nuts, and a reusable woven basket.",
+        image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Desk Drop Mini Gifts",
+        category: "corporate",
+        price: "$18",
+        tag: "Teams",
+        description: "Compact appreciation gifts for teams, launches, and events.",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Kitten Cuddle Box",
+        category: "pets",
+        price: "$25",
+        tag: "Kitten",
+        description: "Tiny toys, soft blanket, grooming comb, and kitten-safe treats.",
+        image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Puppy Welcome Basket",
+        category: "pets",
+        price: "$35",
+        tag: "Puppy",
+        description: "Chew toys, training treats, bow tie, and a cozy starter blanket.",
+        image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Chihuahua Charm Set",
+        category: "pets",
+        price: "$30",
+        tag: "Tiny",
+        description: "Mini harness, petite toy, treat pouch, and a cute photo card.",
+        image: "https://images.unsplash.com/photo-1601758064130-922f7d7ddec1?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Cat Nap Deluxe",
+        category: "pets",
+        price: "$39",
+        tag: "Cat",
+        description: "Plush bed, catnip toy, snack tin, and a pastel gift wrap.",
+        image: "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Doggo Treat Party",
+        category: "pets",
+        price: "$37",
+        tag: "Dog",
+        description: "Biscuits, rope toy, bandana, and celebration card for a good pup.",
+        image: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Cute Pet Photo Gift",
+        category: "pets",
+        price: "$22",
+        tag: "Photo",
+        description: "Mini frame, custom pet note, paw-print tag, and sweet treats.",
+        image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Rabbit Snuggle Basket",
+        category: "pets",
+        price: "$29",
+        tag: "Rabbit",
+        description: "Soft hay mat, chew toys, grooming brush, and gentle rabbit-safe treats.",
+        image: "https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Parrot Play Perch Set",
+        category: "pets",
+        price: "$33",
+        tag: "Bird",
+        description: "Colorful bird toys, perch accessories, seed cup, and a bright gift card.",
+        image: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Hamster Tiny Home Kit",
+        category: "pets",
+        price: "$22",
+        tag: "Hamster",
+        description: "Mini hideout, chew sticks, bedding scoop, and adorable snack pouch.",
+        image: "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Fish Bowl Care Gift",
+        category: "pets",
+        price: "$27",
+        tag: "Fish",
+        description: "Aquarium decor, fish food, care notes, and calming blue gift wrap.",
+        image: "https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Turtle Care Starter",
+        category: "pets",
+        price: "$38",
+        tag: "Turtle",
+        description: "Basking decor, food tin, care checklist, and nature-toned packaging.",
+        image: "https://images.unsplash.com/photo-1496196614460-48988a57fccf?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Guinea Pig Treat Box",
+        category: "pets",
+        price: "$26",
+        tag: "Guinea Pig",
+        description: "Crunchy treats, cozy bedding extras, chew toys, and a tiny name tag.",
+        image: "https://images.unsplash.com/photo-1612267168669-679c961c5b31?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Small Pet Grooming Set",
+        category: "pets",
+        price: "$24",
+        tag: "Grooming",
+        description: "Gentle brush, nail file, mini towel, and pastel pouch for little pets.",
+        image: "https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Pet Birthday Party Pack",
+        category: "pets",
+        price: "$43",
+        tag: "Party",
+        description: "Mini birthday hat, treats, toy, photo prop, and celebration card.",
+        image: "https://images.unsplash.com/photo-1560743641-3914f2c45636?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "BMW M3 Fan Collection",
+        category: "cars",
+        price: "$95",
+        tag: "BMW M3",
+        description: "A sleek car-lover box with a model car, key holder, mug, and premium card.",
+        image: "https://images.unsplash.com/photo-1617814076668-0b9cbb6c9652?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "BMW X Series Adventure Set",
+        category: "cars",
+        price: "$115",
+        tag: "X Series",
+        description: "Travel tumbler, leather tag, mini SUV model, and weekend-drive treats.",
+        image: "https://images.unsplash.com/photo-1556189250-72ba954cfc2b?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Mercedes-Benz Executive Box",
+        category: "cars",
+        price: "$130",
+        tag: "Mercedes",
+        description: "Elegant desk accessories, car scent, notebook, and luxury-style wrapping.",
+        image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Mercedes-AMG Celebration Set",
+        category: "cars",
+        price: "$150",
+        tag: "AMG",
+        description: "Performance-themed gift with model car, drinkware, snack tin, and bold card.",
+        image: "https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Mazda Driver Gift Set",
+        category: "cars",
+        price: "$75",
+        tag: "Mazda",
+        description: "Key pouch, air freshener, travel mug, and a clean minimalist gift finish.",
+        image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Mazda CX Family Drive Hamper",
+        category: "cars",
+        price: "$102",
+        tag: "Mazda CX",
+        description: "Road-trip snacks, organizer pouch, bottle set, and family-drive note card.",
+        image: "https://images.unsplash.com/photo-1549925862-9900e6ec0619?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Luxury Car Reveal Kit",
+        category: "cars",
+        price: "$58",
+        tag: "Reveal",
+        description: "Ribbon, bow, reveal card, mini florals, and photo-ready car surprise details.",
+        image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Soft Cardigan Gift Set",
+        category: "clothing",
+        price: "$37",
+        tag: "Cardigan",
+        description: "A cozy cardigan bundle with soft wrap, care card, and ribbon finish.",
+        image: "https://images.unsplash.com/photo-1542060748-10c28b62716f?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Men's Suit Styling Box",
+        category: "clothing",
+        price: "$150",
+        tag: "Men",
+        description: "Sharp suit gifting with tie, pocket square, lapel pin, and premium box.",
+        image: "https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Women's Suit Elegance Set",
+        category: "clothing",
+        price: "$145",
+        tag: "Women",
+        description: "Polished suit-inspired gift with scarf, brooch, note card, and luxe wrap.",
+        image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Kids Clothes Celebration Pack",
+        category: "clothing",
+        price: "$52",
+        tag: "Kids",
+        description: "Cute kids outfits, socks, bow detail, and a playful gift tag.",
+        image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Hijab Harmony Collection",
+        category: "clothing",
+        price: "$42",
+        tag: "Hijab",
+        description: "Elegant hijabs with pins, soft pouch, color card, and graceful wrapping.",
+        image: "https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Arafat Classic Gift",
+        category: "clothing",
+        price: "$30",
+        tag: "Arafat",
+        description: "Classic arafat scarf gift with neutral packaging and a handwritten card.",
+        image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Kanzu Occasion Set",
+        category: "clothing",
+        price: "$70",
+        tag: "Kanzu",
+        description: "Kanzu-focused occasion gift with fragrance card, cuff detail, and wrap.",
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Tie & Pocket Square Box",
+        category: "clothing",
+        price: "$32",
+        tag: "Ties",
+        description: "A neat tie, pocket square, lapel pin, and message card for formal gifting.",
+        image: "https://images.unsplash.com/photo-1529701870190-9ae4010fd124?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Baggy Streetwear Bundle",
+        category: "clothing",
+        price: "$66",
+        tag: "Baggy",
+        description: "Oversized tee, relaxed-fit styling accessories, socks, and streetwear tag.",
+        image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Crop Top Trend Pack",
+        category: "clothing",
+        price: "$34",
+        tag: "Crops",
+        description: "Cute crop top bundle with hair clips, mini pouch, and playful wrap.",
+        image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Clothing Accessories Edit",
+        category: "clothing",
+        price: "$45",
+        tag: "Accessories",
+        description: "Belts, scarf, pins, socks, and small style details packed as one gift.",
+        image: "https://images.unsplash.com/photo-1511556820780-d912e42b4980?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "HP Envy Laptop Gift",
+        category: "electronics",
+        price: "$1,100",
+        tag: "HP Envy",
+        description: "Premium HP Envy-inspired laptop gift with setup card, sleeve, and wrap choice.",
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Lenovo Productivity Laptop",
+        category: "electronics",
+        price: "$980",
+        tag: "Lenovo",
+        description: "Lenovo laptop collection for work, study, and everyday productivity gifting.",
+        image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Huawei MateBook Style Set",
+        category: "electronics",
+        price: "$1,050",
+        tag: "Huawei",
+        description: "Huawei laptop gift set with clean accessories, sleeve, and elegant packaging.",
+        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Apple MacBook Gift Box",
+        category: "electronics",
+        price: "$1,600",
+        tag: "Apple",
+        description: "Apple laptop gifting with MacBook-style essentials, charger pouch, and note card.",
+        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "iPhone 17 Gift Set",
+        category: "electronics",
+        price: "$1,199",
+        tag: "iPhone 17",
+        description: "Current-generation iPhone 17 gift bundle with case, screen guard, and ribbon wrap.",
+        image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "iPhone Air Slim Gift",
+        category: "electronics",
+        price: "$1,399",
+        tag: "iPhone Air",
+        description: "A slim Apple phone gift set with MagSafe-style accessories and premium packaging.",
+        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "iPhone 17 Pro Luxe Box",
+        category: "electronics",
+        price: "$1,799",
+        tag: "17 Pro",
+        description: "High-end iPhone 17 Pro gift set with protective case, cable wrap, and card.",
+        image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Desktop Computer Starter Kit",
+        category: "electronics",
+        price: "$1,250",
+        tag: "Computer",
+        description: "Desktop computer gifting with keyboard, mouse pad, cable clips, and desk card.",
+        image: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Gaming Computer Surprise",
+        category: "electronics",
+        price: "$1,850",
+        tag: "Gaming",
+        description: "Gaming computer-themed gift with RGB accessories, headset stand, and snack tin.",
+        image: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Pink Laptop Wrap",
+        category: "electronics",
+        price: "$22",
+        tag: "Pink Wrap",
+        description: "Soft pink laptop wrap for a polished, feminine, scratch-resistant finish.",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=80"
+      },
+      {
+        name: "Pastel Laptop Wrap Pack",
+        category: "electronics",
+        price: "$28",
+        tag: "Colors",
+        description: "Laptop wraps in blush, lavender, mint, cream, and black color options.",
+        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=700&q=80"
+      }
+    ];
+
+    const productGrid = document.querySelector("#productGrid");
+    const flashSalePanel = document.querySelector("#flashSalePanel");
+    const searchInput = document.querySelector("#giftSearch");
+    const filterButtons = document.querySelectorAll(".filter-chip");
+    const cartCount = document.querySelector("#cartCount");
+    const openBagButton = document.querySelector("#openBag");
+    const closeBagButton = document.querySelector("#closeBag");
+    const bagDrawer = document.querySelector("#bagDrawer");
+    const bagOverlay = document.querySelector("#bagOverlay");
+    const bagItems = document.querySelector("#bagItems");
+    const bagTotal = document.querySelector("#bagTotal");
+    const bagSavings = document.querySelector("#bagSavings");
+    const promoBand = document.querySelector("#promoBand");
+    const promoText = document.querySelector("#promoText");
+    const checkoutButton = document.querySelector("#checkoutButton");
+    const toast = document.querySelector("#toast");
+    const toastText = document.querySelector("#toastText");
+    const paymentOverlay = document.querySelector("#paymentOverlay");
+    const paymentModal = document.querySelector("#paymentModal");
+    const closePaymentButton = document.querySelector("#closePayment");
+    const paymentItem = document.querySelector("#paymentItem");
+    const paymentAmount = document.querySelector("#paymentAmount");
+    const paymentTimeline = document.querySelector("#paymentTimeline");
+    const mpesaPhone = document.querySelector("#mpesaPhone");
+    const sponsorPhone = document.querySelector("#sponsorPhone");
+    const payMpesaButton = document.querySelector("#payMpesa");
+    const requestSponsorPayButton = document.querySelector("#requestSponsorPay");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const mobileMenu = document.querySelector("#mobileMenu");
+    const form = document.querySelector("#giftForm");
+    const formNote = document.querySelector("#formNote");
+    const shopPhone = "0114313249";
+    const shopEmail = "elthrasherrucyv@gmail.com";
+    const promoDiscount = 0.3;
+    const promoStartDay = 15;
+    const promoEndDay = 25;
+    const flashSaleDiscount = 0.2;
+    const dailyFlashSaleCount = 4;
+
+    let activeFilter = "all";
+    const bag = {};
+    let toastTimer;
+    let selectedFlashProduct = null;
+
+    function loadSavedBag() {
+      try {
+        const savedBag = JSON.parse(localStorage.getItem("louriceGiftBag") || "{}");
+        Object.entries(savedBag).forEach(([name, quantity]) => {
+          if (getProduct(name) && Number(quantity) > 0) {
+            bag[name] = Number(quantity);
+          }
+        });
+      } catch (error) {
+        localStorage.removeItem("louriceGiftBag");
+      }
+    }
+
+    function saveBag() {
+      try {
+        localStorage.setItem("louriceGiftBag", JSON.stringify(bag));
+      } catch (error) {
+        return;
+      }
+    }
+
+    function removeFlashSaleItemsFromBag() {
+      getDailyFlashProducts().forEach((product) => {
+        delete bag[product.name];
+      });
+      saveBag();
+    }
+
+    function getProduct(productName) {
+      return products.find((product) => product.name === productName);
+    }
+
+    function parsePrice(price) {
+      return Number(price.replace(/[^\d]/g, ""));
+    }
+
+    function formatPrice(value) {
+      return `$${value.toLocaleString("en-US")}`;
+    }
+
+    function isPromoActive(date = new Date()) {
+      const day = date.getDate();
+      return day >= promoStartDay && day <= promoEndDay;
+    }
+
+    function getPromoLabel(date = new Date()) {
+      const monthName = date.toLocaleString("en-US", { month: "long" });
+      return `${monthName} ${promoStartDay}-${promoEndDay}`;
+    }
+
+    function getDayOfYear(date = new Date()) {
+      const start = new Date(date.getFullYear(), 0, 0);
+      return Math.floor((date - start) / 86400000);
+    }
+
+    function getDailyFlashProducts(date = new Date()) {
+      const seed = getDayOfYear(date);
+      const picked = [];
+      let offset = 0;
+
+      while (picked.length < Math.min(dailyFlashSaleCount, products.length)) {
+        const product = products[(seed + offset * 7) % products.length];
+        if (!picked.some((item) => item.name === product.name)) {
+          picked.push(product);
+        }
+        offset += 1;
+      }
+
+      return picked;
+    }
+
+    function isFlashSaleProduct(product) {
+      return getDailyFlashProducts().some((item) => item.name === product.name);
+    }
+
+    function getDiscountInfo(product) {
+      if (isPromoActive()) {
+        return { label: "30% OFF", name: "Monthly promo", rate: promoDiscount };
+      }
+
+      if (isFlashSaleProduct(product)) {
+        return { label: "FLASH SALE", name: "Daily flash sale", rate: flashSaleDiscount };
+      }
+
+      return null;
+    }
+
+    function isDirectFlashProduct(product) {
+      return isFlashSaleProduct(product);
+    }
+
+    function getDiscountedPrice(product) {
+      const discount = getDiscountInfo(product);
+      const value = parsePrice(product.price);
+      return discount ? Math.round(value * (1 - discount.rate)) : value;
+    }
+
+    function renderPrice(product) {
+      const discount = getDiscountInfo(product);
+      if (!discount) return product.price;
+      return `<del>${product.price}</del><span>${formatPrice(getDiscountedPrice(product))}</span>`;
+    }
+
+    function getItemUnitPrice(product) {
+      return getDiscountedPrice(product);
+    }
+
+    function renderDiscountBadge(product) {
+      const discount = getDiscountInfo(product);
+      if (!discount) return "";
+      const flashClass = discount.name === "Daily flash sale" ? " flash" : "";
+      return `<span class="discount-badge${flashClass}">${discount.label}</span>`;
+    }
+
+    function updatePromoDisplay() {
+      promoText.textContent = `Runs monthly from ${getPromoLabel()} to help shoppers discover more Lourice gifts.`;
+      promoBand.classList.toggle("show", isPromoActive());
+    }
+
+    function renderFlashSale() {
+      const flashProducts = getDailyFlashProducts();
+      flashSalePanel.innerHTML = `
+        <div class="flash-sale-head">
+          <div>
+            <h3>Daily Flash Sale</h3>
+            <p>${isPromoActive() ? "Monthly 30% promo is active today, so it beats the flash-sale price." : "Today's selected products get 20% off until midnight."}</p>
+          </div>
+          <a class="btn btn-light" href="#shop">
+            <i data-lucide="zap"></i>
+            View today
+          </a>
+        </div>
+        <div class="flash-sale-grid">
+          ${flashProducts.map((product) => `
+            <article class="flash-sale-card">
+              <img src="${product.image}" alt="${product.name}" />
+              <div>
+                <strong>${product.name}</strong>
+                <span>${formatPrice(getItemUnitPrice(product))} today</span>
+              </div>
+              <button class="btn btn-light" type="button" data-flash-buy="${product.name}">
+                <i data-lucide="smartphone"></i>
+                Buy via M-Pesa
+              </button>
+            </article>
+          `).join("")}
+        </div>
+      `;
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function getDeliveryTimeline(price) {
+      const value = parsePrice(price);
+      if (value >= 1500) return "Delivery estimate: 7-14 business days";
+      if (value >= 900) return "Delivery estimate: 5-10 business days";
+      if (value >= 150) return "Delivery estimate: 3-7 business days";
+      if (value >= 75) return "Delivery estimate: 2-5 business days";
+      if (value >= 40) return "Delivery estimate: 1-3 business days";
+      return "Delivery estimate: Same day to 2 days";
+    }
+
+    function getBagEntries() {
+      return Object.entries(bag)
+        .map(([name, quantity]) => ({ product: getProduct(name), quantity }))
+        .filter((entry) => entry.product);
+    }
+
+    function showToast(message) {
+      toastText.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 1700);
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function updateCartCount() {
+      const totalItems = Object.values(bag).reduce((total, quantity) => total + quantity, 0);
+      cartCount.textContent = totalItems;
+      cartCount.classList.remove("bump");
+      void cartCount.offsetWidth;
+      cartCount.classList.add("bump");
+    }
+
+    function renderBag() {
+      const entries = getBagEntries();
+      const subtotal = entries.reduce((sum, entry) => {
+        return sum + parsePrice(entry.product.price) * entry.quantity;
+      }, 0);
+      const total = entries.reduce((sum, entry) => {
+        return sum + getItemUnitPrice(entry.product) * entry.quantity;
+      }, 0);
+      const savings = subtotal - total;
+
+      bagTotal.textContent = formatPrice(total);
+      bagSavings.textContent = savings > 0 ? `Discount savings: ${formatPrice(savings)}` : "";
+      bagSavings.classList.toggle("show", savings > 0);
+      checkoutButton.classList.toggle("disabled", entries.length === 0);
+
+      if (!entries.length) {
+        bagItems.innerHTML = `
+          <div class="bag-empty">
+            <i data-lucide="shopping-bag"></i>
+            <p>Your bag is waiting for something lovely.</p>
+            <a class="btn btn-outline" href="#shop" data-close-bag>Browse gifts</a>
+          </div>
+        `;
+      } else {
+        bagItems.innerHTML = entries
+          .map(({ product, quantity }) => `
+            <article class="bag-item">
+              <img src="${product.image}" alt="${product.name}" />
+              <div>
+                <h3>${product.name}</h3>
+                <p>${getDiscountInfo(product) ? `${product.price} before discount, ${formatPrice(getItemUnitPrice(product))} each now` : `${product.price} each`}</p>
+                <span class="bag-delivery">${getDeliveryTimeline(product.price)}</span>
+                <div class="bag-row">
+                  <div class="mini-quantity" aria-label="${product.name} quantity">
+                    <button type="button" data-action="decrease" data-name="${product.name}" aria-label="Remove one ${product.name}">
+                      <i data-lucide="minus"></i>
+                    </button>
+                    <span>${quantity}</span>
+                    <button type="button" data-action="increase" data-name="${product.name}" aria-label="Add one more ${product.name}">
+                      <i data-lucide="plus"></i>
+                    </button>
+                  </div>
+                  <button class="remove-item" type="button" data-action="remove" data-name="${product.name}">Remove</button>
+                </div>
+              </div>
+            </article>
+          `)
+          .join("");
+      }
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    }
+
+    function openBag() {
+      bagDrawer.classList.add("open");
+      bagOverlay.classList.add("open");
+      bagDrawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeBag() {
+      bagDrawer.classList.remove("open");
+      bagOverlay.classList.remove("open");
+      bagDrawer.setAttribute("aria-hidden", "true");
+    }
+
+    function changeBagItem(productName, action) {
+      const product = getProduct(productName);
+      if (product && isDirectFlashProduct(product)) {
+        openPaymentPrompt(productName);
+        showToast("Flash sale items are bought directly");
+        return;
+      }
+
+      const currentQuantity = bag[productName] || 0;
+
+      if (action === "increase") {
+        bag[productName] = currentQuantity + 1;
+        showToast(`${productName} added to bag`);
+      }
+
+      if (action === "decrease") {
+        const nextQuantity = currentQuantity - 1;
+        if (nextQuantity > 0) {
+          bag[productName] = nextQuantity;
+          showToast(`${productName} updated`);
+        } else {
+          delete bag[productName];
+          showToast(`${productName} removed`);
+        }
+      }
+
+      if (action === "remove") {
+        delete bag[productName];
+        showToast(`${productName} removed`);
+      }
+
+      saveBag();
+      updateCartCount();
+      renderProducts();
+      renderBag();
+    }
+
+    function openPaymentPrompt(productName) {
+      const product = getProduct(productName);
+      if (!product) return;
+      selectedFlashProduct = product;
+      paymentItem.textContent = product.name;
+      paymentAmount.textContent = formatPrice(getItemUnitPrice(product));
+      paymentTimeline.textContent = getDeliveryTimeline(product.price);
+      paymentOverlay.classList.add("open");
+      paymentModal.classList.add("open");
+      paymentModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePaymentPrompt() {
+      paymentOverlay.classList.remove("open");
+      paymentModal.classList.remove("open");
+      paymentModal.setAttribute("aria-hidden", "true");
+    }
+
+    function getPaymentMessage(product) {
+      return `Please pay ${formatPrice(getItemUnitPrice(product))} via M-Pesa to ${shopPhone} for ${product.name}. ${getDeliveryTimeline(product.price)}.`;
+    }
+
+    function renderProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = products.filter((product) => {
+        const matchesFilter = activeFilter === "all" || product.category === activeFilter;
+        const matchesSearch = [product.name, product.category, product.description]
+          .join(" ")
+          .toLowerCase()
+          .includes(query);
+        return matchesFilter && matchesSearch;
+      });
+
+      productGrid.innerHTML = filtered
+        .map((product) => {
+          const quantity = bag[product.name] || 0;
+          return `
+          <article class="product-card" data-category="${product.category}" data-name="${product.name}">
+            <div class="product-media">
+              <img src="${product.image}" alt="${product.name}" loading="lazy" />
+              <span class="tag">${product.tag}</span>
+              ${renderDiscountBadge(product)}
+            </div>
+            <div class="product-body">
+              <div class="product-title">
+                <h3>${product.name}</h3>
+                <span class="price">${renderPrice(product)}</span>
+              </div>
+              <p>${product.description}</p>
+              <span class="delivery-note">
+                <i data-lucide="truck"></i>
+                ${getDeliveryTimeline(product.price)}
+              </span>
+              ${isDirectFlashProduct(product) ? `
+                <button class="btn btn-primary" type="button" data-flash-buy="${product.name}">
+                  <i data-lucide="smartphone"></i>
+                  Buy via M-Pesa
+                </button>
+                <p class="payment-note">Flash sale items are bought directly and do not go into the bag.</p>
+              ` : quantity > 0 ? `
+                <div class="quantity-control" aria-label="${product.name} quantity in bag">
+                  <button class="quantity-btn" type="button" data-action="decrease" data-name="${product.name}" aria-label="Remove one ${product.name}">
+                    <i data-lucide="minus"></i>
+                  </button>
+                  <span class="quantity-label">${quantity} in bag</span>
+                  <button class="quantity-btn" type="button" data-action="increase" data-name="${product.name}" aria-label="Add one more ${product.name}">
+                    <i data-lucide="plus"></i>
+                  </button>
+                </div>
+              ` : `
+                <button class="btn btn-outline add-to-bag" type="button" data-action="increase" data-name="${product.name}">
+                  <i data-lucide="plus"></i>
+                  Add to bag
+                </button>
+              `}
+            </div>
+          </article>
+        `;
+        })
+        .join("");
+
+      if (!filtered.length) {
+        productGrid.innerHTML = `
+          <p style="grid-column: 1 / -1; color: var(--muted); margin: 0;">
+            No gifts match that search yet. Try another occasion or request a custom box.
+          </p>
+        `;
+      }
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+      revealProductCards();
+    }
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        renderProducts();
+      });
+    });
+
+    searchInput.addEventListener("input", renderProducts);
+
+    flashSalePanel.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-flash-buy]");
+      if (!button) return;
+      openPaymentPrompt(button.dataset.flashBuy);
+    });
+
+    productGrid.addEventListener("click", (event) => {
+      const flashButton = event.target.closest("[data-flash-buy]");
+      if (flashButton) {
+        openPaymentPrompt(flashButton.dataset.flashBuy);
+        return;
+      }
+
+      const button = event.target.closest("[data-action]");
+      if (!button) return;
+
+      changeBagItem(button.dataset.name, button.dataset.action);
+    });
+
+    bagItems.addEventListener("click", (event) => {
+      const closeLink = event.target.closest("[data-close-bag]");
+      if (closeLink) {
+        closeBag();
+        return;
+      }
+
+      const button = event.target.closest("[data-action]");
+      if (!button) return;
+      changeBagItem(button.dataset.name, button.dataset.action);
+    });
+
+    openBagButton.addEventListener("click", openBag);
+    closeBagButton.addEventListener("click", closeBag);
+    bagOverlay.addEventListener("click", closeBag);
+    checkoutButton.addEventListener("click", closeBag);
+    closePaymentButton.addEventListener("click", closePaymentPrompt);
+    paymentOverlay.addEventListener("click", closePaymentPrompt);
+    payMpesaButton.addEventListener("click", () => {
+      if (!selectedFlashProduct) return;
+      showToast(`Pay ${formatPrice(getItemUnitPrice(selectedFlashProduct))} to ${shopPhone} via M-Pesa`);
+      window.location.href = "tel:*334%23";
+    });
+    requestSponsorPayButton.addEventListener("click", () => {
+      if (!selectedFlashProduct) return;
+      const phone = sponsorPhone.value.trim();
+      const message = getPaymentMessage(selectedFlashProduct);
+      const smsTarget = phone ? `sms:${encodeURIComponent(phone)}?body=` : "sms:?body=";
+      showToast("Opening payment request message");
+      window.location.href = `${smsTarget}${encodeURIComponent(message)}`;
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeBag();
+        closePaymentPrompt();
+      }
+    });
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = mobileMenu.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    mobileMenu.addEventListener("click", (event) => {
+      if (event.target.matches("a")) {
+        mobileMenu.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const selectedItems = getBagEntries()
+        .map(({ product, quantity }) => {
+          const discount = getDiscountInfo(product);
+          return `- ${product.name} x ${quantity} (${formatPrice(getItemUnitPrice(product))} each${discount ? ` after ${discount.name}, was ${product.price}` : ""}, ${getDeliveryTimeline(product.price)})`;
+        })
+        .join("\n") || "- No bag items selected";
+      const emailBody = [
+        `Name: ${formData.get("name")}`,
+        `Phone: ${formData.get("phone")}`,
+        `Request type: ${formData.get("occasion")}`,
+        `Budget: ${formData.get("budget")}`,
+        `Gift requested: ${formData.get("giftRequest") || "No specific unlisted gift named."}`,
+        "",
+        "Gift notes:",
+        formData.get("message") || "No extra notes provided.",
+        "",
+        "Bag items:",
+        selectedItems,
+        "",
+        `Preferred shop contact: ${shopPhone}`
+      ].join("\n");
+
+      formNote.classList.add("show");
+      formNote.textContent = `Thanks. Your email app is opening a helpline request to ${shopEmail}.`;
+      window.location.href = `mailto:${shopEmail}?subject=${encodeURIComponent("Lourice Gift Shop helpline request")}&body=${encodeURIComponent(emailBody)}`;
+      form.reset();
+      showToast("Request saved for Lourice");
+    });
+
+    function revealProductCards() {
+      const cards = document.querySelectorAll(".product-card");
+      cards.forEach((card, index) => {
+        setTimeout(() => card.classList.add("is-visible"), index * 45);
+      });
+    }
+
+    window.addEventListener("load", () => {
+      loadSavedBag();
+      removeFlashSaleItemsFromBag();
+      updatePromoDisplay();
+      renderFlashSale();
+      renderProducts();
+      renderBag();
+      updateCartCount();
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
