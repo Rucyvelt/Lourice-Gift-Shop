@@ -81,91 +81,6 @@
             font-weight: bold;
         }
         
-        .flash-sale-banner {
-            background: linear-gradient(135deg, #ff1744, #ff6100);
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin: 20px auto;
-            max-width: 1400px;
-            border-radius: 15px;
-            animation: pulse 1s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        
-        .flash-sale-banner h3 {
-            font-size: 1.8em;
-            margin-bottom: 5px;
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        
-        .countdown-item {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 15px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .countdown-number {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-        
-        .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff1744;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: bold;
-            z-index: 10;
-        }
-        
-        .flash-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #ff6100;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: bold;
-            animation: blink 0.5s infinite;
-        }
-        
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 0.9em;
-            margin-right: 10px;
-        }
-        
-        .sale-price {
-            color: #ff1744;
-            font-weight: bold;
-        }
-        
         .hero {
             text-align: center;
             padding: 60px 20px;
@@ -284,7 +199,7 @@
             width: 100%;
             height: 250px;
             overflow: hidden;
-            background: #ffe6f0;
+            background: linear-gradient(135deg, #ffe6f0, #ffd9e8);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -313,7 +228,7 @@
         }
         
         .product-price {
-            font-size: 1.3em;
+            font-size: 1.5em;
             color: #ff1493;
             font-weight: bold;
             margin: 10px 0;
@@ -321,7 +236,6 @@
         
         .product-price::before {
             content: "KES ";
-            font-size: 0.8em;
         }
         
         .product-description {
@@ -444,6 +358,9 @@
             .products-grid {
                 grid-template-columns: 1fr;
             }
+            .product-image-container {
+                height: 200px;
+            }
         }
     </style>
 </head>
@@ -456,16 +373,6 @@
             </div>
         </div>
     </header>
-    
-    <div class="flash-sale-banner" id="flashSaleBanner" style="display: none;">
-        <h3>⚡ 24HR FLASH SALE! ⚡</h3>
-        <p>Up to 50% OFF on selected items!</p>
-        <div class="countdown" id="countdown">
-            <div class="countdown-item"><div class="countdown-number" id="hours">24</div><div>Hours</div></div>
-            <div class="countdown-item"><div class="countdown-number" id="minutes">00</div><div>Minutes</div></div>
-            <div class="countdown-item"><div class="countdown-number" id="seconds">00</div><div>Seconds</div></div>
-        </div>
-    </div>
     
     <div class="hero">
         <h1>✨ Find the Perfect Gift ✨</h1>
@@ -480,7 +387,9 @@
         
         <div class="main-content">
             <h2 class="section-title" id="categoryTitle">✨ All Products</h2>
-            <div class="products-grid" id="productsGrid"></div>
+            <div class="products-grid" id="productsGrid">
+                <div style="text-align: center; color: white;">Loading products...</div>
+            </div>
         </div>
     </div>
     
@@ -535,72 +444,112 @@
         
         let currentCategory = 'all';
         
-        // Flash Sale Configuration
-        const flashSaleProducts = [1, 2, 3, 11, 12, 39, 47, 69];
-        const monthlyDiscountProducts = [4, 5, 13, 14, 40, 48, 70, 71];
-        
-        let flashSaleEndTime = localStorage.getItem('flashSaleEndTime');
-        if (!flashSaleEndTime) {
-            flashSaleEndTime = new Date();
-            flashSaleEndTime.setHours(flashSaleEndTime.getHours() + 24);
-            localStorage.setItem('flashSaleEndTime', flashSaleEndTime);
-        } else {
-            flashSaleEndTime = new Date(flashSaleEndTime);
-        }
-        
-        function updateCountdown() {
-            const now = new Date();
-            const diff = flashSaleEndTime - now;
+        // ============================================
+        // YOUR IMAGE MAPPING - KEEP AS IS
+        // ============================================
+        function getProductImage(productId, productName, category) {
+            const imageMap = {
+                1: '/images/maxi.jpg',
+                2: '/images/shirt.jpg',
+                3: '/images/blazer.jpg',
+                4: '/images/kidsdress.jpg',
+                5: '/images/kanzu.jpg',
+                6: '/images/gown.jpg',
+                7: '/images/hoodie.jpg',
+                8: '/images/jeans.jpg',
+                9: '/images/swimwear.jpg',
+                10: '/images/pajama.jpg',
+                11: '/images/necklace.jpg',
+                12: '/images/bag.jpg',
+                13: '/images/sunglasses.jpg',
+                14: '/images/watch.jpg',
+                15: '/images/scarf.jpg',
+                16: '/images/belt.jpg',
+                17: '/images/earrings.jpg',
+                18: '/images/bracelet.jpg',
+                19: '/images/wallet.jpg',
+                20: '/images/hat.jpg',
+                21: '/images/smartphone.jpg',
+                22: '/images/budgetphone.jpg',
+                23: '/images/premiumphone.jpg',
+                24: '/images/phonekit.jpg',
+                25: '/images/earbuds.jpg',
+                26: '/images/powerbank.jpg',
+                27: '/images/stand.jpg',
+                28: '/images/selfielight.jpg',
+                29: '/images/barbie.jpg',
+                30: '/images/babydoll.jpg',
+                31: '/images/teddybear.jpg',
+                32: '/images/princessdoll.jpg',
+                33: '/images/animalset.jpg',
+                34: '/images/dollhouse.jpg',
+                35: '/images/unicorn.jpg',
+                36: '/images/dollclothes.jpg',
+                37: '/images/rccar.jpg',
+                38: '/images/puzzle.jpg',
+                39: '/images/roses.jpg',
+                40: '/images/mixedflowers.jpg',
+                41: '/images/lilies.jpg',
+                42: '/images/sunflowers.jpg',
+                43: '/images/orchid.jpg',
+                44: '/images/flowerbox.jpg',
+                45: '/images/tulips.jpg',
+                46: '/images/driedflowers.jpg',
+                47: '/images/birthdaycake.jpg',
+                48: '/images/cupcakes.jpg',
+                49: '/images/weddingcake.jpg',
+                50: '/images/chocolates.jpg',
+                51: '/images/fruitbasket.jpg',
+                52: '/images/cookies.jpg',
+                53: '/images/macarons.jpg',
+                54: '/images/hamper.jpg',
+                55: '/images/lacewig.jpg',
+                56: '/images/curlywig.jpg',
+                57: '/images/bobwig.jpg',
+                58: '/images/longwig.jpg',
+                59: '/images/coloredwig.jpg',
+                60: '/images/wigcap.jpg',
+                61: '/images/wigstand.jpg',
+                62: '/images/wigkit.jpg',
+                63: '/images/rccar.jpg',
+                64: '/images/carmodels.jpg',
+                65: '/images/truck.jpg',
+                66: '/images/racetrack.jpg',
+                67: '/images/pullbackcars.jpg',
+                68: '/images/parkingset.jpg',
+                69: '/images/lipstick.jpg',
+                70: '/images/eyeshadow.jpg',
+                71: '/images/foundation.jpg',
+                72: '/images/mascara.jpg',
+                73: '/images/brushes.jpg',
+                74: '/images/highlighter.jpg',
+                75: '/images/makeupbag.jpg',
+                76: '/images/nailpolish.jpg',
+                77: '/images/remover.jpg',
+                78: '/images/facemask.jpg'
+            };
             
-            if (diff <= 0) {
-                document.getElementById('flashSaleBanner').style.display = 'none';
-                return;
-            }
-            
-            document.getElementById('flashSaleBanner').style.display = 'block';
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (3600000)) / (1000 * 60));
-            const seconds = Math.floor((diff % (60000)) / 1000);
-            
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-        
-        function getProductPrice(product) {
-            let price = product.price;
-            let discountType = null;
-            
-            if (flashSaleProducts.includes(product.id)) {
-                price = product.price * 0.5;
-                discountType = 'flash';
-            } else if (monthlyDiscountProducts.includes(product.id)) {
-                price = product.price * 0.7;
-                discountType = 'monthly';
-            }
-            
-            return { price: Math.round(price), discountType, originalPrice: product.price };
-        }
-        
-        function getProductImage(productId) {
-            return `/images/product-${productId}.jpg`;
+            return imageMap[productId] || '/images/placeholder.jpg';
         }
         
         function loadCategories() {
             const categories = [
-                'all', 'clothing', 'accessories', 'phones', 'dolls', 
-                'flowers', 'food', 'wigs', 'cars', 'makeup'
+                { id: 'all', name: '🎁 All Products' },
+                { id: 'clothing', name: '👗 Clothing' },
+                { id: 'accessories', name: '💎 Accessories' },
+                { id: 'phones', name: '📱 Phones' },
+                { id: 'dolls', name: '🧸 Dolls' },
+                { id: 'flowers', name: '🌹 Flowers' },
+                { id: 'food', name: '🍰 Cakes' },
+                { id: 'wigs', name: '💇 Wigs' },
+                { id: 'cars', name: '🏎️ Cars' },
+                { id: 'makeup', name: '💄 Makeup' }
             ];
-            const categoryNames = {
-                'all': '🎁 All Products', 'clothing': '👗 Clothing', 'accessories': '💎 Accessories',
-                'phones': '📱 Phones', 'dolls': '🧸 Dolls', 'flowers': '🌹 Flowers',
-                'food': '🍰 Cakes', 'wigs': '💇 Wigs', 'cars': '🏎️ Cars', 'makeup': '💄 Makeup'
-            };
             
             const container = document.getElementById('categoryList');
             container.innerHTML = categories.map(cat => `
-                <button class="category-btn ${currentCategory === cat ? 'active' : ''}" onclick="loadProductsByCategory('${cat}')">
-                    ${categoryNames[cat]}
+                <button class="category-btn ${currentCategory === cat.id ? 'active' : ''}" onclick="loadProductsByCategory('${cat.id}')">
+                    ${cat.name}
                 </button>
             `).join('');
         }
@@ -609,57 +558,61 @@
             currentCategory = category;
             loadCategories();
             
-            const categoryNames = {
-                'all': '✨ All Products', 'clothing': '👗 Clothing', 'accessories': '💎 Accessories',
-                'phones': '📱 Phones', 'dolls': '🧸 Dolls', 'flowers': '🌹 Flowers',
-                'food': '🍰 Cakes', 'wigs': '💇 Wigs', 'cars': '🏎️ Cars', 'makeup': '💄 Makeup'
+            const titles = {
+                'all': '✨ All Products',
+                'clothing': '👗 Clothing',
+                'accessories': '💎 Accessories',
+                'phones': '📱 Phones',
+                'dolls': '🧸 Dolls',
+                'flowers': '🌹 Flowers',
+                'food': '🍰 Cakes',
+                'wigs': '💇 Wigs',
+                'cars': '🏎️ Cars',
+                'makeup': '💄 Makeup'
             };
-            document.getElementById('categoryTitle').textContent = categoryNames[category];
-            document.getElementById('productsGrid').innerHTML = '<div style="text-align:center;color:white;">Loading products...</div>';
+            document.getElementById('categoryTitle').textContent = titles[category] || '✨ Products';
+            document.getElementById('productsGrid').innerHTML = '<div style="text-align: center; color: white;">Loading products...</div>';
             
             try {
                 const url = category === 'all' ? `${API}/products` : `${API}/products/category/${category}`;
                 const response = await fetch(url);
                 const data = await response.json();
+                
                 if (data.success && data.products) {
                     displayProducts(data.products);
+                } else {
+                    document.getElementById('productsGrid').innerHTML = '<div style="text-align: center; color: white;">No products found</div>';
                 }
             } catch (error) {
-                document.getElementById('productsGrid').innerHTML = '<div style="text-align:center;color:white;">Error loading products</div>';
+                console.error('Error:', error);
+                document.getElementById('productsGrid').innerHTML = '<div style="text-align: center; color: white;">Error loading products. Please try again.</div>';
             }
         }
         
         function displayProducts(products) {
             const grid = document.getElementById('productsGrid');
+            
             if (!products || products.length === 0) {
-                grid.innerHTML = '<div style="text-align:center;color:white;">No products found</div>';
+                grid.innerHTML = '<div style="text-align: center; color: white;">No products available</div>';
                 return;
             }
             
-            grid.innerHTML = products.map(product => {
-                const { price, discountType, originalPrice } = getProductPrice(product);
-                return `
-                    <div class="product-card">
-                        ${discountType === 'flash' ? '<div class="flash-badge">⚡ FLASH SALE 50% OFF</div>' : ''}
-                        ${discountType === 'monthly' ? '<div class="discount-badge">🎉 30% OFF</div>' : ''}
-                        <div class="product-image-container">
-                            <img class="product-image" 
-                                 src="${getProductImage(product.id)}" 
-                                 alt="${product.name}"
-                                 onerror="this.src='https://placehold.co/400x300/ffd9e8/ff1493?text=Gift'">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">${escapeHtml(product.name)}</div>
-                            <div class="product-price">
-                                ${discountType ? `<span class="original-price">KES ${originalPrice.toLocaleString()}</span>` : ''}
-                                KES ${price.toLocaleString()}
-                            </div>
-                            <div class="product-description">${escapeHtml(product.description)}</div>
-                            <button class="btn" onclick="addToCart(${product.id})">Add to Cart 🛒</button>
-                        </div>
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image-container">
+                        <img class="product-image" 
+                             src="${getProductImage(product.id, product.name, product.category)}" 
+                             alt="${product.name}"
+                             onerror="this.src='https://placehold.co/400x300/ffd9e8/ff1493?text=${encodeURIComponent(product.name)}'">
                     </div>
-                `;
-            }).join('');
+                    <div class="product-info">
+                        <div class="product-name">${escapeHtml(product.name)}</div>
+                        <div class="product-price">KES ${product.price.toLocaleString()}</div>
+                        <div class="product-description">${escapeHtml(product.description || 'Beautiful gift for your loved ones')}</div>
+                        <button class="btn" onclick="addToCart(${product.id})">Add to Cart 🛒</button>
+                    </div>
+                </div>
+            `).join('');
         }
         
         async function addToCart(productId) {
@@ -682,10 +635,10 @@
             try {
                 const response = await fetch(`${API}/cart`);
                 const data = await response.json();
-                const count = data.cart.reduce((sum, item) => sum + item.quantity, 0);
+                const count = data.cart ? data.cart.reduce((sum, item) => sum + item.quantity, 0) : 0;
                 document.getElementById('cartCount').textContent = count;
             } catch (error) {
-                console.error('Error updating cart:', error);
+                console.error('Error:', error);
             }
         }
         
@@ -695,13 +648,21 @@
                 const data = await response.json();
                 
                 if (!data.cart || data.cart.length === 0) {
-                    document.getElementById('cartItems').innerHTML = '<p>Your cart is empty</p>';
+                    document.getElementById('cartItems').innerHTML = '<p style="text-align: center;">Your cart is empty</p>';
                     document.getElementById('cartTotal').innerHTML = '';
                 } else {
                     document.getElementById('cartItems').innerHTML = data.cart.map(item => `
                         <div class="cart-item">
-                            <div><strong>${escapeHtml(item.name)}</strong><br>KES ${item.price.toLocaleString()} x ${item.quantity}</div>
-                            <div><button onclick="removeFromCart(${item.productId})">🗑️</button></div>
+                            <div>
+                                <strong>${escapeHtml(item.name)}</strong><br>
+                                KES ${item.price.toLocaleString()} x ${item.quantity}
+                            </div>
+                            <div>
+                                <button onclick="updateQuantity(${item.productId}, ${item.quantity - 1})">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.productId}, ${item.quantity + 1})">+</button>
+                                <button onclick="removeFromCart(${item.productId})">🗑️</button>
+                            </div>
                         </div>
                     `).join('');
                     document.getElementById('cartTotal').innerHTML = `Total: KES ${data.total.toLocaleString()}`;
@@ -712,18 +673,42 @@
             }
         }
         
+        async function updateQuantity(productId, newQuantity) {
+            if (newQuantity <= 0) {
+                await removeFromCart(productId);
+            } else {
+                await fetch(`${API}/cart/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity: newQuantity })
+                });
+                openCart();
+                updateCartCount();
+            }
+        }
+        
         async function removeFromCart(productId) {
             await fetch(`${API}/cart/${productId}`, { method: 'DELETE' });
             openCart();
             updateCartCount();
         }
         
-        function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
-        function checkout() { closeCart(); document.getElementById('checkoutModal').style.display = 'block'; }
-        function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+        
+        function checkout() {
+            closeCart();
+            document.getElementById('checkoutModal').style.display = 'block';
+        }
+        
+        function closeCheckout() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
         
         document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
             const order = {
                 customerName: document.getElementById('customerName').value,
                 phoneNumber: document.getElementById('phoneNumber').value,
@@ -738,13 +723,14 @@
                     body: JSON.stringify(order)
                 });
                 const data = await response.json();
+                
                 if (data.success) {
                     showToast('✅ Order placed successfully!', 'success');
                     closeCheckout();
                     updateCartCount();
                     document.getElementById('checkoutForm').reset();
                 } else {
-                    showToast('Error placing order', 'error');
+                    showToast(data.message || 'Error placing order', 'error');
                 }
             } catch (error) {
                 showToast('Error placing order', 'error');
@@ -766,7 +752,7 @@
             return div.innerHTML;
         }
         
-        setInterval(updateCountdown, 1000);
+        // Initialize
         loadCategories();
         loadProductsByCategory('all');
         updateCartCount();
