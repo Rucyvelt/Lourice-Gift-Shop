@@ -143,38 +143,23 @@
         .status-shipped { background: #9c27b0; color: white; }
         .status-delivered { background: #4caf50; color: white; }
         
-        select, .delete-btn, .edit-btn, .save-btn {
+        select, .delete-btn, .message-btn {
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
         }
         
-        .edit-btn {
+        .message-btn {
             background: #2196f3;
             color: white;
             border: none;
             margin-right: 5px;
         }
         
-        .save-btn {
-            background: #4caf50;
-            color: white;
-            border: none;
-        }
-        
         .delete-btn {
             background: #f44336;
             color: white;
             border: none;
-        }
-        
-        .cancel-btn {
-            background: #999;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
         }
         
         .logout-btn {
@@ -213,14 +198,6 @@
             font-size: 1em;
         }
         
-        .image-preview {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-        
         .message {
             padding: 10px;
             border-radius: 5px;
@@ -237,20 +214,51 @@
             color: white;
         }
         
-        .edit-price-input {
-            width: 100px;
-            padding: 5px;
-            border: 1px solid #ff1493;
-            border-radius: 5px;
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 20px;
+        }
+        
+        .message-templates {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .template-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .template-btn:hover {
+            background: #ff69b4;
+            color: white;
         }
         
         @media (max-width: 768px) {
             th, td {
                 padding: 8px;
                 font-size: 12px;
-            }
-            .edit-price-input {
-                width: 70px;
             }
         }
     </style>
@@ -301,7 +309,7 @@
         </div>
         
         <div id="productsTab" class="tab-content">
-            <h2>Manage Products (Edit Price, Delete)</h2>
+            <h2>Manage Products</h2>
             <div id="productsList">Loading products...</div>
         </div>
         
@@ -336,31 +344,63 @@
                     <textarea id="productDescription" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Image Filename *</label>
-                    <input type="text" id="productImage" required placeholder="example: myproduct.jpg">
-                    <small>Place your image in the /images/ folder first, then enter the filename here</small>
-                    <div id="imagePreview"></div>
+                    <label>Image Filename</label>
+                    <input type="text" id="productImage" placeholder="myproduct.jpg">
                 </div>
                 <button type="submit" class="btn-primary">Add Product</button>
             </form>
+        </div>
+    </div>
+    
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <h2>💬 Send Message to Customer</h2>
+            <div id="messageModalOrderInfo"></div>
             
-            <hr style="margin: 30px 0;">
+            <div class="message-templates">
+                <button class="template-btn" onclick="setTemplate('order_received')">📦 Order Received</button>
+                <button class="template-btn" onclick="setTemplate('payment_verified')">✅ Payment Verified</button>
+                <button class="template-btn" onclick="setTemplate('order_shipped')">🚚 Order Shipped</button>
+                <button class="template-btn" onclick="setTemplate('order_delivered')">🎉 Order Delivered</button>
+            </div>
             
-            <h3>📸 How to Add Images:</h3>
-            <ol style="margin-left: 20px; line-height: 1.8;">
-                <li>Save your image to the <strong>images/</strong> folder in your project</li>
-                <li>Enter the exact filename (e.g., "mygift.jpg") in the Image Filename field above</li>
-                <li>Fill in all product details and click Add Product</li>
-                <li>The product will appear in the shop with your image!</li>
-            </ol>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="messageText" rows="5" style="width:100%; padding:10px;" placeholder="Type your message here..."></textarea>
+            </div>
+            
+            <button class="btn-primary" onclick="sendMessage()">Send Message</button>
+            <button class="btn-primary" style="background:#999; margin-top:10px;" onclick="closeMessageModal()">Cancel</button>
         </div>
     </div>
 
     <script>
         let authToken = null;
+        let currentOrderId = null;
         const API = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000/api' 
-    : 'https://lourice-gift-shop.onrender.com/api';
+            ? 'http://localhost:3000/api' 
+            : 'https://lourice-gift-shop.onrender.com/api';
+        
+        // Message templates
+        const templates = {
+            order_received: "📦 Order Confirmation\n\nDear {customer},\n\nWe have received your order #{orderId}. Total amount: KES {total}.\n\nWe will process your order and send you an update soon.\n\nThank you for shopping with Lourice Gift Shop! 🎀",
+            
+            payment_verified: "✅ Payment Verified\n\nDear {customer},\n\nYour payment for order #{orderId} has been verified successfully.\n\nWe are now preparing your items for shipping.\n\nThank you for your business! 💕",
+            
+            order_shipped: "🚚 Order Shipped\n\nDear {customer},\n\nGreat news! Your order #{orderId} has been shipped and is on its way to you.\n\nYou can expect delivery within 2-3 business days.\n\nTracking will be shared soon.",
+            
+            order_delivered: "🎉 Order Delivered\n\nDear {customer},\n\nYour order #{orderId} has been delivered!\n\nWe hope you love your gifts. Please share photos with us!\n\nThank you for choosing Lourice Gift Shop. Come again! 🎀"
+        };
+        
+        function setTemplate(type) {
+            let order = currentOrder;
+            let message = templates[type];
+            message = message.replace('{customer}', order.customerName);
+            message = message.replace('{orderId}', order.id);
+            message = message.replace('{total}', order.total.toLocaleString());
+            document.getElementById('messageText').value = message;
+        }
         
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -379,18 +419,12 @@
                     localStorage.setItem('adminToken', authToken);
                     showAdminPanel();
                 } else {
-                    showLoginMessage('Invalid password', 'error');
+                    alert('Invalid password');
                 }
             } catch (error) {
-                showLoginMessage('Error connecting to server', 'error');
+                alert('Error connecting to server');
             }
         });
-        
-        function showLoginMessage(msg, type) {
-            const div = document.getElementById('loginMessage');
-            div.innerHTML = `<div class="message ${type}">${msg}</div>`;
-            setTimeout(() => div.innerHTML = '', 3000);
-        }
         
         function showAdminPanel() {
             document.getElementById('loginSection').style.display = 'none';
@@ -400,17 +434,6 @@
             loadRequests();
             loadProductsList();
         }
-        
-        // Image preview
-        document.getElementById('productImage').addEventListener('input', function() {
-            const filename = this.value;
-            const preview = document.getElementById('imagePreview');
-            if (filename) {
-                preview.innerHTML = `<img src="/images/${filename}" class="image-preview" onerror="this.src='https://placehold.co/100x100/ffd9e8/ff1493?text=Invalid'"><br><small>Preview:</small>`;
-            } else {
-                preview.innerHTML = '';
-            }
-        });
         
         async function loadDashboard() {
             const response = await fetch(`${API}/admin/orders`, {
@@ -439,13 +462,15 @@
                 document.getElementById('ordersList').innerHTML = `
                     <div style="overflow-x: auto;">
                     <table>
-                        <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+                        <thead>
+                            <tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
                         <tbody>
                             ${data.orders.map(order => `
                                 <tr>
                                     <td>#${order.id}</td>
                                     <td>${order.customerName}</td>
-                                    <td>${order.phoneNumber}</td>
+                                    <td>${order.phoneNumber || '-'}</td>
                                     <td>${order.items.map(i => `${i.name} x${i.quantity}`).join(', ')}</td>
                                     <td>KES ${order.total.toLocaleString()}</td>
                                     <td>
@@ -456,7 +481,10 @@
                                             <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
                                         </select>
                                     </td>
-                                    <td><button class="delete-btn" onclick="deleteOrder(${order.id})">Delete</button></td>
+                                    <td>
+                                        <button class="message-btn" onclick="openMessageModal(${order.id})">💬 Message</button>
+                                        <button class="delete-btn" onclick="deleteOrder(${order.id})">Delete</button>
+                                    </td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -465,6 +493,61 @@
                 `;
             } else {
                 document.getElementById('ordersList').innerHTML = '<p>No orders yet</p>';
+            }
+        }
+        
+        let currentOrder = null;
+        
+        async function openMessageModal(orderId) {
+            // Get order details
+            const response = await fetch(`${API}/admin/orders`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            const data = await response.json();
+            currentOrder = data.orders.find(o => o.id === orderId);
+            currentOrderId = orderId;
+            
+            document.getElementById('messageModalOrderInfo').innerHTML = `
+                <p><strong>Order #${currentOrder.id}</strong></p>
+                <p>Customer: ${currentOrder.customerName}</p>
+                <p>Phone: ${currentOrder.phoneNumber || 'N/A'}</p>
+                <p>Total: KES ${currentOrder.total.toLocaleString()}</p>
+            `;
+            document.getElementById('messageText').value = '';
+            document.getElementById('messageModal').style.display = 'block';
+        }
+        
+        function closeMessageModal() {
+            document.getElementById('messageModal').style.display = 'none';
+        }
+        
+        async function sendMessage() {
+            const message = document.getElementById('messageText').value;
+            if (!message) {
+                alert('Please enter a message');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API}/admin/orders/${currentOrderId}/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    alert('✅ Message sent to customer!');
+                    closeMessageModal();
+                    loadOrders();
+                } else {
+                    alert('Error sending message');
+                }
+            } catch (error) {
+                alert('Error sending message');
             }
         }
         
@@ -486,7 +569,7 @@
                                     <td>${req.senderName}</td>
                                     <td>${req.recipientName}</td>
                                     <td>${req.occasion}</td>
-                                    <td>${req.message.substring(0, 50)}</td>
+                                    <td>${req.message?.substring(0, 50) || '-'}</td>
                                     <td><button class="delete-btn" onclick="deleteRequest(${req.id})">Delete</button></td>
                                 </tr>
                             `).join('')}
@@ -507,32 +590,15 @@
                 document.getElementById('productsList').innerHTML = `
                     <div style="overflow-x: auto;">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Current Price (KES)</th>
-                                <th>New Price</th>
-                                <th>Category</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th>Action</th></tr></thead>
                         <tbody>
                             ${data.products.map(product => `
-                                <tr id="product-row-${product.id}">
+                                <tr>
                                     <td>${product.id}</td>
-                                    <td><img src="${product.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;" onerror="this.src='https://placehold.co/50x50/ffd9e8/ff1493?text=No'"></td>
                                     <td>${product.name}</td>
-                                    <td id="price-display-${product.id}">KES ${product.price.toLocaleString()}</td>
-                                    <td>
-                                        <input type="number" id="edit-price-${product.id}" class="edit-price-input" placeholder="New price" value="${product.price}">
-                                    </td>
+                                    <td>KES ${product.price.toLocaleString()}</td>
                                     <td>${product.category}</td>
-                                    <td>
-                                        <button class="edit-btn" onclick="updateProductPrice(${product.id})">💾 Save Price</button>
-                                        <button class="delete-btn" onclick="deleteProduct(${product.id})">🗑️ Delete</button>
-                                    </td>
+                                    <td><button class="delete-btn" onclick="deleteProduct(${product.id})">Delete</button></td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -540,60 +606,6 @@
                     </div>
                 `;
             }
-        }
-        
-        // Function to update product price
-        async function updateProductPrice(productId) {
-            const newPriceInput = document.getElementById(`edit-price-${productId}`);
-            const newPrice = parseInt(newPriceInput.value);
-            
-            if (!newPrice || newPrice <= 0) {
-                alert('Please enter a valid price (positive number)');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API}/admin/products/${productId}/price`, {
-                    method: 'PUT',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ price: newPrice })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Update the displayed price
-                    document.getElementById(`price-display-${productId}`).innerHTML = `KES ${newPrice.toLocaleString()}`;
-                    // Show success message
-                    showTemporaryMessage(`✅ Price updated to KES ${newPrice.toLocaleString()}`, 'success');
-                    // Reload dashboard stats
-                    loadDashboard();
-                } else {
-                    alert('Error updating price: ' + (data.message || 'Unknown error'));
-                }
-            } catch (error) {
-                alert('Error connecting to server');
-                console.error('Update price error:', error);
-            }
-        }
-        
-        function showTemporaryMessage(message, type) {
-            // Create temporary message
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `message ${type}`;
-            msgDiv.style.position = 'fixed';
-            msgDiv.style.top = '20px';
-            msgDiv.style.right = '20px';
-            msgDiv.style.zIndex = '9999';
-            msgDiv.innerHTML = message;
-            document.body.appendChild(msgDiv);
-            
-            setTimeout(() => {
-                msgDiv.remove();
-            }, 3000);
         }
         
         async function updateOrderStatus(orderId, status) {
@@ -632,15 +644,12 @@
         }
         
         async function deleteProduct(productId) {
-            if (confirm('Delete this product? This action cannot be undone.')) {
-                const response = await fetch(`${API}/admin/products/${productId}`, {
+            if (confirm('Delete this product?')) {
+                await fetch(`${API}/admin/products/${productId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                if (response.ok) {
-                    loadProductsList();
-                    showTemporaryMessage('✅ Product deleted successfully', 'success');
-                }
+                loadProductsList();
             }
         }
         
@@ -655,31 +664,18 @@
                 imageName: document.getElementById('productImage').value
             };
             
-            try {
-                const response = await fetch(`${API}/admin/products`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify(product)
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    document.getElementById('addProductMessage').innerHTML = '<div class="message success">✅ Product added successfully!</div>';
-                    document.getElementById('addProductForm').reset();
-                    document.getElementById('imagePreview').innerHTML = '';
-                    loadProductsList();
-                    setTimeout(() => {
-                        document.getElementById('addProductMessage').innerHTML = '';
-                    }, 3000);
-                } else {
-                    document.getElementById('addProductMessage').innerHTML = '<div class="message error">Error adding product</div>';
-                }
-            } catch (error) {
-                document.getElementById('addProductMessage').innerHTML = '<div class="message error">Error connecting to server</div>';
-            }
+            await fetch(`${API}/admin/products`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify(product)
+            });
+            
+            alert('Product added!');
+            document.getElementById('addProductForm').reset();
+            loadProductsList();
         });
         
         function showTab(tabName) {

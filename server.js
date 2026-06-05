@@ -12,7 +12,30 @@ app.use(express.static(path.join(__dirname)));
 
 // Admin password
 const ADMIN_PASSWORD = '@Rucylora.com';
-
+// Send message to customer (NEW)
+app.post('/api/admin/orders/:id/message', requireAuth, (req, res) => {
+    const orderId = parseInt(req.params.id);
+    const { message } = req.body;
+    const order = orders.find(o => o.id === orderId);
+    
+    if (!order) {
+        return res.status(404).json({ success: false, message: "Order not found" });
+    }
+    
+    if (!order.messages) {
+        order.messages = [];
+    }
+    
+    order.messages.push({
+        id: order.messages.length + 1,
+        message: message,
+        sentBy: 'Admin',
+        sentAt: new Date().toISOString()
+    });
+    
+    console.log(`📨 Message sent to ${order.customerName}: ${message}`);
+    res.json({ success: true, message: "Message sent to customer" });
+});
 // ============ COMPLETE PRODUCTS - ALL 78 ============
 let products = [
     // CLOTHING (1-10)
@@ -197,6 +220,30 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'customer.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin.html')));
 
 // ============ START ============
+// Send message to customer (Admin only)
+app.post('/api/admin/orders/:id/message', requireAuth, (req, res) => {
+    const orderId = parseInt(req.params.id);
+    const { message } = req.body;
+    const order = orders.find(o => o.id === orderId);
+    
+    if (!order) {
+        return res.status(404).json({ success: false, message: "Order not found" });
+    }
+    
+    if (!order.messages) {
+        order.messages = [];
+    }
+    
+    order.messages.push({
+        id: order.messages.length + 1,
+        message: message,
+        sentBy: 'Admin',
+        sentAt: new Date().toISOString()
+    });
+    
+    console.log(`📨 Message sent to ${order.customerName}: ${message}`);
+    res.json({ success: true, message: "Message sent to customer" });
+});
 app.listen(PORT, () => {
     console.log(`✅ Server running on port ${PORT}`);
     console.log(`📦 Total Products: ${products.length}`);

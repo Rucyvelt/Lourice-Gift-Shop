@@ -884,6 +884,18 @@
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
+        // In the orders display, add this to show messages
+${order.messages && order.messages.length > 0 ? `
+    <div style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px;">
+        <strong>📨 Messages from Admin:</strong>
+        ${order.messages.map(msg => `
+            <div style="margin-top: 8px; padding: 8px; background: white; border-radius: 5px; border-left: 3px solid #ff1493;">
+                <div style="font-size: 0.8em; color: #999;">${new Date(msg.sentAt).toLocaleString()}</div>
+                <div>${msg.message}</div>
+            </div>
+        `).join('')}
+    </div>
+` : ''}
         
         // Initialize
         setInterval(updateCountdown, 1000);
