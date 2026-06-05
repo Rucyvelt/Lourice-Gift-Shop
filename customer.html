@@ -4,19 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lourice Gifts">
-<link rel="apple-touch-icon" href="/icons/icon-152x152.png">
-<link rel="icon" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lourice Gifts">
+    <meta name="theme-color" content="#ff1493">
     <title>Lourice Gift Shop - Pink Collection 🎀</title>
-    <!-- App Icon and Manifest -->
-<link rel="icon" type="image/png" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff1493">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
     <style>
         * {
             margin: 0;
@@ -87,7 +81,6 @@
             font-weight: bold;
         }
         
-        /* Flash Sale Banner */
         .flash-sale-banner {
             background: linear-gradient(135deg, #ff1744, #ff6100);
             color: white;
@@ -464,7 +457,6 @@
         </div>
     </header>
     
-    <!-- Flash Sale Banner -->
     <div class="flash-sale-banner" id="flashSaleBanner" style="display: none;">
         <h3>⚡ 24HR FLASH SALE! ⚡</h3>
         <p>Up to 50% OFF on selected items!</p>
@@ -497,7 +489,6 @@
         <p>✨ Free delivery on orders over KES 5000 ✨</p>
     </div>
     
-    <!-- Cart Modal -->
     <div id="cartModal" class="modal">
         <div class="modal-content">
             <h2>🛒 Your Cart</h2>
@@ -508,7 +499,6 @@
         </div>
     </div>
     
-    <!-- Checkout Modal -->
     <div id="checkoutModal" class="modal">
         <div class="modal-content">
             <h2>Complete Order</h2>
@@ -539,142 +529,16 @@
     </div>
 
     <script>
-    const API = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000/api' 
-    : 'https://lourice-gift-shop.onrender.com/api';
+        const API = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api' 
+            : 'https://lourice-gift-shop.onrender.com/api';
+        
         let currentCategory = 'all';
-        let cart = [];
         
-        // ============================================
-        // 📸 STEP 1: PUT YOUR IMAGES IN /images/ FOLDER
-        // ============================================
-        // Create folder: images/
-        // Put your images there: maxi.jpg, shirt.jpg, bag.jpg, etc.
-        // Then MAP them below:
-        
-        function getProductImage(productId, productName, category) {
-            // ============================================
-            // 🔧 EDIT THIS SECTION - Add YOUR image paths
-            // ============================================
-            
-            const imageMap = {
-                // CLOTHING IMAGES - Add your image filenames here
-                1: '/images/maxi.jpg',           // African Print Maxi Dress
-                2: '/images/shirt.jpg',           // Men's Casual Shirt
-                3: '/images/blazer.jpg',          // Women's Blazer
-                4: '/images/kidsdress.jpg',       // Kids Party Dress
-                5: '/images/kanzu.jpg',           // Traditional Kanzu
-                6: '/images/gown.jpg',            // Evening Gown
-                7: '/images/hoodie.jpg',          // Hoodie
-                8: '/images/jeans.jpg',           // Denim Jeans
-                9: '/images/swimwear.jpg',        // Swimwear
-                10: '/images/pajama.jpg',         // Pajama
-                
-                // ACCESSORIES IMAGES
-                11: '/images/necklace.jpg',
-                12: '/images/bag.jpg',
-                13: '/images/sunglasses.jpg',
-                14: '/images/watch.jpg',
-                15: '/images/scarf.jpg',
-                16: '/images/belt.jpg',
-                17: '/images/earrings.jpg',
-                18: '/images/bracelet.jpg',
-                19: '/images/wallet.jpg',
-                20: '/images/hat.jpg',
-                
-                // PHONES IMAGES
-                21: '/images/smartphone.jpg',
-                22: '/images/budgetphone.jpg',
-                23: '/images/premiumphone.jpg',
-                24: '/images/phonekit.jpg',
-                25: '/images/earbuds.jpg',
-                26: '/images/powerbank.jpg',
-                27: '/images/stand.jpg',
-                28: '/images/selfielight.jpg',
-                
-                // DOLLS IMAGES
-                29: '/images/barbie.jpg',
-                30: '/images/babydoll.jpg',
-                31: '/images/teddybear.jpg',
-                32: '/images/princessdoll.jpg',
-                33: '/images/animalset.jpg',
-                34: '/images/dollhouse.jpg',
-                35: '/images/unicorn.jpg',
-                36: '/images/dollclothes.jpg',
-                37: '/images/rccar.jpg',
-                38: '/images/puzzle.jpg',
-                
-                // FLOWERS IMAGES
-                39: '/images/roses.jpg',
-                40: '/images/mixedflowers.jpg',
-                41: '/images/lilies.jpg',
-                42: '/images/sunflowers.jpg',
-                43: '/images/orchid.jpg',
-                44: '/images/flowerbox.jpg',
-                45: '/images/tulips.jpg',
-                46: '/images/driedflowers.jpg',
-                
-                // FOOD IMAGES
-                47: '/images/birthdaycake.jpg',
-                48: '/images/cupcakes.jpg',
-                49: '/images/weddingcake.jpg',
-                50: '/images/chocolates.jpg',
-                51: '/images/fruitbasket.jpg',
-                52: '/images/cookies.jpg',
-                53: '/images/macarons.jpg',
-                54: '/images/hamper.jpg',
-                
-                // WIGS IMAGES
-                55: '/images/lacewig.jpg',
-                56: '/images/curlywig.jpg',
-                57: '/images/bobwig.jpg',
-                58: '/images/longwig.jpg',
-                59: '/images/coloredwig.jpg',
-                60: '/images/wigcap.jpg',
-                61: '/images/wigstand.jpg',
-                62: '/images/wigkit.jpg',
-                
-                // CARS IMAGES
-                63: '/images/rccar.jpg',
-                64: '/images/carmodels.jpg',
-                65: '/images/truck.jpg',
-                66: '/images/racetrack.jpg',
-                67: '/images/pullbackcars.jpg',
-                68: '/images/parkingset.jpg',
-                
-                // MAKEUP IMAGES
-                69: '/images/lipstick.jpg',
-                70: '/images/eyeshadow.jpg',
-                71: '/images/foundation.jpg',
-                72: '/images/mascara.jpg',
-                73: '/images/brushes.jpg',
-                74: '/images/highlighter.jpg',
-                75: '/images/makeupbag.jpg',
-                76: '/images/nailpolish.jpg',
-                77: '/images/remover.jpg',
-                78: '/images/facemask.jpg'
-            };
-            
-            // Return mapped image or default
-            if (imageMap[productId]) {
-                return imageMap[productId];
-            }
-            
-            // Default fallback image
-            return '/images/placeholder.jpg';
-        }
-        
-        // ============================================
-        // 🏷️ STEP 2: SET FLASH SALE & MONTHLY DISCOUNTS
-        // ============================================
-        
-        // Flash Sale Products (24hrs) - Add product IDs that are on flash sale
+        // Flash Sale Configuration
         const flashSaleProducts = [1, 2, 3, 11, 12, 39, 47, 69];
-        
-        // Monthly Discount Products (30% off) - Add product IDs for monthly discounts
         const monthlyDiscountProducts = [4, 5, 13, 14, 40, 48, 70, 71];
         
-        // Flash sale end time (24 hours from now)
         let flashSaleEndTime = localStorage.getItem('flashSaleEndTime');
         if (!flashSaleEndTime) {
             flashSaleEndTime = new Date();
@@ -684,7 +548,6 @@
             flashSaleEndTime = new Date(flashSaleEndTime);
         }
         
-        // Update countdown timer
         function updateCountdown() {
             const now = new Date();
             const diff = flashSaleEndTime - now;
@@ -695,7 +558,6 @@
             }
             
             document.getElementById('flashSaleBanner').style.display = 'block';
-            
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (3600000)) / (1000 * 60));
             const seconds = Math.floor((diff % (60000)) / 1000);
@@ -705,18 +567,14 @@
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
         
-        // Get product price with discounts
         function getProductPrice(product) {
             let price = product.price;
             let discountType = null;
             
-            // Check for flash sale (50% off)
             if (flashSaleProducts.includes(product.id)) {
                 price = product.price * 0.5;
                 discountType = 'flash';
-            }
-            // Check for monthly discount (30% off)
-            else if (monthlyDiscountProducts.includes(product.id)) {
+            } else if (monthlyDiscountProducts.includes(product.id)) {
                 price = product.price * 0.7;
                 discountType = 'monthly';
             }
@@ -724,7 +582,10 @@
             return { price: Math.round(price), discountType, originalPrice: product.price };
         }
         
-        // Load categories
+        function getProductImage(productId) {
+            return `/images/product-${productId}.jpg`;
+        }
+        
         function loadCategories() {
             const categories = [
                 'all', 'clothing', 'accessories', 'phones', 'dolls', 
@@ -744,7 +605,6 @@
             `).join('');
         }
         
-        // Load products
         async function loadProductsByCategory(category) {
             currentCategory = category;
             loadCategories();
@@ -755,12 +615,13 @@
                 'food': '🍰 Cakes', 'wigs': '💇 Wigs', 'cars': '🏎️ Cars', 'makeup': '💄 Makeup'
             };
             document.getElementById('categoryTitle').textContent = categoryNames[category];
+            document.getElementById('productsGrid').innerHTML = '<div style="text-align:center;color:white;">Loading products...</div>';
             
             try {
                 const url = category === 'all' ? `${API}/products` : `${API}/products/category/${category}`;
                 const response = await fetch(url);
                 const data = await response.json();
-                if (data.success) {
+                if (data.success && data.products) {
                     displayProducts(data.products);
                 }
             } catch (error) {
@@ -770,40 +631,43 @@
         
         function displayProducts(products) {
             const grid = document.getElementById('productsGrid');
+            if (!products || products.length === 0) {
+                grid.innerHTML = '<div style="text-align:center;color:white;">No products found</div>';
+                return;
+            }
+            
             grid.innerHTML = products.map(product => {
                 const { price, discountType, originalPrice } = getProductPrice(product);
-                
                 return `
                     <div class="product-card">
                         ${discountType === 'flash' ? '<div class="flash-badge">⚡ FLASH SALE 50% OFF</div>' : ''}
                         ${discountType === 'monthly' ? '<div class="discount-badge">🎉 30% OFF</div>' : ''}
                         <div class="product-image-container">
                             <img class="product-image" 
-                                 src="${getProductImage(product.id, product.name, product.category)}" 
+                                 src="${getProductImage(product.id)}" 
                                  alt="${product.name}"
-                                 onerror="this.src='/images/placeholder.jpg'">
+                                 onerror="this.src='https://placehold.co/400x300/ffd9e8/ff1493?text=Gift'">
                         </div>
                         <div class="product-info">
-                            <div class="product-name">${product.name}</div>
+                            <div class="product-name">${escapeHtml(product.name)}</div>
                             <div class="product-price">
                                 ${discountType ? `<span class="original-price">KES ${originalPrice.toLocaleString()}</span>` : ''}
-                                <span class="${discountType ? 'sale-price' : ''}">KES ${price.toLocaleString()}</span>
+                                KES ${price.toLocaleString()}
                             </div>
-                            <div class="product-description">${product.description}</div>
-                            <button class="btn" onclick="addToCart(${product.id}, ${price})">Add to Cart 🛒</button>
+                            <div class="product-description">${escapeHtml(product.description)}</div>
+                            <button class="btn" onclick="addToCart(${product.id})">Add to Cart 🛒</button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
         
-        // Cart functions
-        async function addToCart(productId, price) {
+        async function addToCart(productId) {
             try {
                 const response = await fetch(`${API}/cart`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ productId, quantity: 1, customPrice: price })
+                    body: JSON.stringify({ productId, quantity: 1 })
                 });
                 if (response.ok) {
                     updateCartCount();
@@ -815,29 +679,37 @@
         }
         
         async function updateCartCount() {
-            const response = await fetch(`${API}/cart`);
-            const data = await response.json();
-            const count = data.cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartCount').textContent = count;
+            try {
+                const response = await fetch(`${API}/cart`);
+                const data = await response.json();
+                const count = data.cart.reduce((sum, item) => sum + item.quantity, 0);
+                document.getElementById('cartCount').textContent = count;
+            } catch (error) {
+                console.error('Error updating cart:', error);
+            }
         }
         
         async function openCart() {
-            const response = await fetch(`${API}/cart`);
-            const data = await response.json();
-            
-            if (data.cart.length === 0) {
-                document.getElementById('cartItems').innerHTML = '<p>Cart is empty</p>';
-                document.getElementById('cartTotal').innerHTML = '';
-            } else {
-                document.getElementById('cartItems').innerHTML = data.cart.map(item => `
-                    <div class="cart-item">
-                        <div><strong>${item.name}</strong><br>KES ${item.price.toLocaleString()} x ${item.quantity}</div>
-                        <div><button onclick="removeFromCart(${item.productId})">🗑️</button></div>
-                    </div>
-                `).join('');
-                document.getElementById('cartTotal').innerHTML = `Total: KES ${data.total.toLocaleString()}`;
+            try {
+                const response = await fetch(`${API}/cart`);
+                const data = await response.json();
+                
+                if (!data.cart || data.cart.length === 0) {
+                    document.getElementById('cartItems').innerHTML = '<p>Your cart is empty</p>';
+                    document.getElementById('cartTotal').innerHTML = '';
+                } else {
+                    document.getElementById('cartItems').innerHTML = data.cart.map(item => `
+                        <div class="cart-item">
+                            <div><strong>${escapeHtml(item.name)}</strong><br>KES ${item.price.toLocaleString()} x ${item.quantity}</div>
+                            <div><button onclick="removeFromCart(${item.productId})">🗑️</button></div>
+                        </div>
+                    `).join('');
+                    document.getElementById('cartTotal').innerHTML = `Total: KES ${data.total.toLocaleString()}`;
+                }
+                document.getElementById('cartModal').style.display = 'block';
+            } catch (error) {
+                showToast('Error loading cart', 'error');
             }
-            document.getElementById('cartModal').style.display = 'block';
         }
         
         async function removeFromCart(productId) {
@@ -850,7 +722,6 @@
         function checkout() { closeCart(); document.getElementById('checkoutModal').style.display = 'block'; }
         function closeCheckout() { document.getElementById('checkoutModal').style.display = 'none'; }
         
-        // Place order
         document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const order = {
@@ -868,9 +739,12 @@
                 });
                 const data = await response.json();
                 if (data.success) {
-                    showToast('✅ Order placed!', 'success');
+                    showToast('✅ Order placed successfully!', 'success');
                     closeCheckout();
                     updateCartCount();
+                    document.getElementById('checkoutForm').reset();
+                } else {
+                    showToast('Error placing order', 'error');
                 }
             } catch (error) {
                 showToast('Error placing order', 'error');
@@ -884,20 +758,14 @@
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
-        // In the orders display, add this to show messages
-${order.messages && order.messages.length > 0 ? `
-    <div style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px;">
-        <strong>📨 Messages from Admin:</strong>
-        ${order.messages.map(msg => `
-            <div style="margin-top: 8px; padding: 8px; background: white; border-radius: 5px; border-left: 3px solid #ff1493;">
-                <div style="font-size: 0.8em; color: #999;">${new Date(msg.sentAt).toLocaleString()}</div>
-                <div>${msg.message}</div>
-            </div>
-        `).join('')}
-    </div>
-` : ''}
         
-        // Initialize
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
         setInterval(updateCountdown, 1000);
         loadCategories();
         loadProductsByCategory('all');
